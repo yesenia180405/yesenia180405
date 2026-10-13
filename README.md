@@ -13,7 +13,7 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
 ## Qué hago
 
 - 🛒 Desarrollo **plataformas e-commerce y de suscripción** multimarca con **Nuxt 4, Vue 3 y TypeScript**: una sola base de código que sirve a varias marcas, cada una con su identidad, idiomas y contenido.
-- ⚡ Construyo interfaces con **SSR, renderizado híbrido y SEO**, rápidas y adaptadas a cualquier pantalla.
+- ⚡ Construyo interfaces **optimizadas para SEO**, rápidas y adaptadas a cualquier pantalla.
 - 🔐 Integro **APIs y servicios**: CMS headless (Strapi), CRM y autenticación segura.
 - 🌍 Trabajo con **internacionalización** (español, inglés y portugués).
 - 🗄️ Desarrollo **backend** con **PHP, Laravel y Java**, con bases de datos **MySQL**.
@@ -23,23 +23,49 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
 
 <table align="center">
   <tr>
-    <td align="center" width="160"><b>🎨 Frontend</b></td>
+    <td align="center" width="140"><b>🎨 Frontend</b></td>
     <td align="center">
-      <img src="https://skillicons.dev/icons?i=vue,nuxt,angular,ts,js,pinia,html,css,sass,tailwind" alt="Vue, Nuxt, Angular, TypeScript, JavaScript, Pinia, HTML, CSS, Sass, Tailwind CSS" />
+      <table>
+      <tr>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=vue" width="48" height="48" alt="Vue" /><br /><sub><b>Vue</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=nuxt" width="48" height="48" alt="Nuxt" /><br /><sub><b>Nuxt</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=angular" width="48" height="48" alt="Angular" /><br /><sub><b>Angular</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=ts" width="48" height="48" alt="TypeScript" /><br /><sub><b>TypeScript</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=js" width="48" height="48" alt="JavaScript" /><br /><sub><b>JavaScript</b></sub></td>
+      </tr>
+      <tr>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=pinia" width="48" height="48" alt="Pinia" /><br /><sub><b>Pinia</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=html" width="48" height="48" alt="HTML" /><br /><sub><b>HTML</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=css" width="48" height="48" alt="CSS" /><br /><sub><b>CSS</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=sass" width="48" height="48" alt="Sass" /><br /><sub><b>Sass</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=tailwind" width="48" height="48" alt="Tailwind CSS" /><br /><sub><b>Tailwind CSS</b></sub></td>
+      </tr>
+      </table>
     </td>
   </tr>
   <tr>
-    <td align="center" width="160"><b>⚙️ Backend</b></td>
+    <td align="center" width="140"><b>⚙️ Backend</b></td>
     <td align="center">
-      <img src="https://skillicons.dev/icons?i=php,laravel,java,mysql" alt="PHP, Laravel, Java, MySQL" />
+      <table>
+      <tr>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=php" width="48" height="48" alt="PHP" /><br /><sub><b>PHP</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=laravel" width="48" height="48" alt="Laravel" /><br /><sub><b>Laravel</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=java" width="48" height="48" alt="Java" /><br /><sub><b>Java</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=mysql" width="48" height="48" alt="MySQL" /><br /><sub><b>MySQL</b></sub></td>
+      </tr>
+      </table>
     </td>
   </tr>
   <tr>
-    <td align="center" width="160"><b>🧰 Herramientas</b></td>
+    <td align="center" width="140"><b>🧰 Herramientas</b></td>
     <td align="center">
-      <img src="https://skillicons.dev/icons?i=git,github" alt="Git, GitHub" />
-      &nbsp;
-      <img height="44" src="https://img.shields.io/badge/Strapi-4945FF?style=for-the-badge&logo=strapi&logoColor=white" alt="Strapi" />
+      <table>
+      <tr>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=git" width="48" height="48" alt="Git" /><br /><sub><b>Git</b></sub></td>
+        <td align="center" width="90"><img src="https://skillicons.dev/icons?i=github" width="48" height="48" alt="GitHub" /><br /><sub><b>GitHub</b></sub></td>
+        <td align="center" width="90"><img src="https://cdn.simpleicons.org/strapi/4945FF" width="48" height="48" alt="Strapi" /><br /><sub><b>Strapi</b></sub></td>
+      </tr>
+      </table>
     </td>
   </tr>
 </table>
