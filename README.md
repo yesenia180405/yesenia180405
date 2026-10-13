@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:6d28d9,100:00dc82&height=180&section=header&text=Yesenia%20Toro&fontSize=48&fontColor=ffffff&fontAlignY=36&desc=Desarrolladora%20Frontend%20%C2%B7%20Vue%20%26%20Nuxt%20%C2%B7%20TypeScript&descAlignY=58&descSize=18" alt="Yesenia Toro · Desarrolladora Frontend" width="100%" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:6d28d9,100:00dc82&height=180&section=header&text=Yesenia%20Toro&fontSize=48&fontColor=ffffff&fontAlignY=36&desc=Desarrolladora%20Frontend%20%C2%B7%20Vue%20y%20Nuxt%20%C2%B7%20TypeScript&descAlignY=58&descSize=18" alt="Yesenia Toro · Desarrolladora Frontend · Vue y Nuxt · TypeScript" width="100%" />
 </p>
 
 ## Sobre mí
@@ -23,21 +23,23 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
 
 <table align="center">
   <tr>
-    <th align="center">🎨 Frontend</th>
-    <th align="center">⚙️ Backend</th>
-    <th align="center">🧰 Servicios y herramientas</th>
+    <td align="center" width="160"><b>🎨 Frontend</b></td>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=vue,nuxt,angular,ts,js,pinia,html,css,sass,tailwind" alt="Vue, Nuxt, Angular, TypeScript, JavaScript, Pinia, HTML, CSS, Sass, Tailwind CSS" />
+    </td>
   </tr>
   <tr>
-    <td align="center" valign="top">
-      <img src="https://skillicons.dev/icons?i=vue,nuxt,angular,ts,js,pinia,html,css,sass,tailwind&perline=5" alt="Vue, Nuxt, Angular, TypeScript, JavaScript, Pinia, HTML, CSS, Sass, Tailwind CSS" />
+    <td align="center" width="160"><b>⚙️ Backend</b></td>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=php,laravel,java,mysql" alt="PHP, Laravel, Java, MySQL" />
     </td>
-    <td align="center" valign="top">
-      <img src="https://skillicons.dev/icons?i=php,laravel,java,mysql&perline=2" alt="PHP, Laravel, Java, MySQL" />
-    </td>
-    <td align="center" valign="top">
-      <img src="https://skillicons.dev/icons?i=git,github&perline=2" alt="Git, GitHub" />
-      <br />
-      <img src="https://img.shields.io/badge/Strapi-4945FF?style=for-the-badge&logo=strapi&logoColor=white" alt="Strapi" />
+  </tr>
+  <tr>
+    <td align="center" width="160"><b>🧰 Herramientas</b></td>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=git,github" alt="Git, GitHub" />
+      &nbsp;
+      <img height="44" src="https://img.shields.io/badge/Strapi-4945FF?style=for-the-badge&logo=strapi&logoColor=white" alt="Strapi" />
     </td>
   </tr>
 </table>
