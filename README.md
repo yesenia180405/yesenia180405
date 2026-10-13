@@ -14,7 +14,7 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
 
 - 🛒 Desarrollo **plataformas e-commerce y de suscripción** multimarca con **Nuxt 4, Vue 3 y TypeScript**: una sola base de código que sirve a varias marcas, cada una con su identidad, idiomas y contenido.
 - ⚡ Construyo interfaces con **SSR, renderizado híbrido y SEO**, rápidas y adaptadas a cualquier pantalla.
-- 🔐 Integro **APIs y servicios**: CMS headless (Strapi), pagos con Stripe, CRM y autenticación segura.
+- 🔐 Integro **APIs y servicios**: CMS headless (Strapi), CRM y autenticación segura.
 - 🌍 Trabajo con **internacionalización** (español, inglés y portugués).
 - 🗄️ Desarrollo **backend** con **PHP, Laravel y Java**, con bases de datos **MySQL**.
 - 📱 Amplío mis conocimientos hacia el **desarrollo multiplataforma** con DAM.
@@ -38,8 +38,6 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
       <img src="https://skillicons.dev/icons?i=git,github&perline=2" alt="Git, GitHub" />
       <br />
       <img src="https://img.shields.io/badge/Strapi-4945FF?style=for-the-badge&logo=strapi&logoColor=white" alt="Strapi" />
-      <br />
-      <img src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
     </td>
   </tr>
 </table>
@@ -80,7 +78,8 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
 ## Estadísticas
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=yesenia180405&show_icons=true&hide_rank=true&hide_border=true&locale=es&title_color=6d28d9&icon_color=00dc82&text_color=8b949e&bg_color=00000000" alt="Estadísticas de GitHub" />
+  <img height="170" src="https://github-readme-stats.vercel.app/api?username=yesenia180405&show_icons=true&hide_rank=true&hide_border=true&locale=es&title_color=6d28d9&icon_color=00dc82&text_color=8b949e&bg_color=00000000" alt="Estadísticas de GitHub" />
+  <img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=yesenia180405&layout=compact&hide_border=true&locale=es&title_color=6d28d9&text_color=8b949e&bg_color=00000000" alt="Lenguajes más usados" />
 </p>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00dc82,100:6d28d9&height=100&section=footer" alt="" width="100%" />
