@@ -21,7 +21,8 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
 - ⚡ Construyo interfaces con **SSR, renderizado híbrido y SEO** cuidado, rápidas y adaptadas a cualquier pantalla.
 - 🔐 Integro **APIs y servicios**: CMS headless (Strapi), pagos con Stripe, CRM y autenticación segura con rutas BFF en el servidor.
 - 🌍 Trabajo con **internacionalización** (español, inglés y portugués).
-- 🧪 Escribo **tests** unitarios, de componentes y end-to-end (Vitest y Playwright) e integro todo en **CI/CD** con GitHub Actions.
+- 🗄️ Desarrollo **backend** con **PHP y Laravel** y **Java**, con bases de datos **MySQL**.
+- 🅰️ También trabajo con **Angular** para construir aplicaciones web.
 - 📱 Amplío mis conocimientos hacia el **desarrollo multiplataforma** con DAM.
 
 ## 🛠️ Tecnologías
@@ -48,11 +49,10 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
 
 ## 📌 Proyectos destacados
 
-| Proyecto | Descripción |
-| --- | --- |
-| [prueba-tecnica](https://github.com/yesenia180405/prueba-tecnica) | 🟣 Portfolio con Nuxt.js, Vue.js y TypeScript |
-| [ejercicios-formacion](https://github.com/yesenia180405/ejercicios-formacion) | Ejercicios de formación en JavaScript y TypeScript |
-| [Presupuestador-Copisteria](https://github.com/yesenia180405/Presupuestador-Copisteria) | Presupuestador web para una copistería (Desarrollo Web en Entorno Cliente) |
+| Proyecto | Descripción | Demo |
+| --- | --- | --- |
+| [🟣 Portfolio](https://github.com/yesenia180405/prueba-tecnica) | Mi portfolio personal desarrollado con **Nuxt, Vue y TypeScript** | [Ver web](https://prueba-tecnica-1cs4.vercel.app) |
+| [📺 Midutch](https://github.com/yesenia180405/midutch) | Clon de la interfaz de **Twitch** con **Nuxt 3 y Tailwind CSS**: canales recomendados, streams en directo y categorías | [Ver web](https://midutch-gamma.vercel.app) |
 
 ## 📊 Estadísticas
 
