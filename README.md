@@ -21,37 +21,25 @@ Me apasiona enfrentar retos complejos y encontrar soluciones creativas a través
 
 ## Tecnologías
 
-<table>
+<table align="center">
   <tr>
-    <td align="center" width="120"><b>Frontend</b></td>
-    <td>
-      <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="Vue" />
-      <img src="https://img.shields.io/badge/Nuxt-00DC82?style=for-the-badge&logo=nuxt&logoColor=white" alt="Nuxt" />
-      <img src="https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular" />
-      <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-      <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-      <img src="https://img.shields.io/badge/Pinia-FFD859?style=for-the-badge&logo=pinia&logoColor=black" alt="Pinia" />
-      <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
-      <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" />
-      <img src="https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white" alt="Sass" />
-      <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
-    </td>
+    <th align="center">🎨 Frontend</th>
+    <th align="center">⚙️ Backend</th>
+    <th align="center">🧰 Servicios y herramientas</th>
   </tr>
   <tr>
-    <td align="center" width="120"><b>Backend</b></td>
-    <td>
-      <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" />
-      <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel" />
-      <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
-      <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+    <td align="center" valign="top">
+      <img src="https://skillicons.dev/icons?i=vue,nuxt,angular,ts,js,pinia,html,css,sass,tailwind&perline=5" alt="Vue, Nuxt, Angular, TypeScript, JavaScript, Pinia, HTML, CSS, Sass, Tailwind CSS" />
     </td>
-  </tr>
-  <tr>
-    <td align="center" width="120"><b>Servicios y herramientas</b></td>
-    <td>
+    <td align="center" valign="top">
+      <img src="https://skillicons.dev/icons?i=php,laravel,java,mysql&perline=2" alt="PHP, Laravel, Java, MySQL" />
+    </td>
+    <td align="center" valign="top">
+      <img src="https://skillicons.dev/icons?i=git,github&perline=2" alt="Git, GitHub" />
+      <br />
       <img src="https://img.shields.io/badge/Strapi-4945FF?style=for-the-badge&logo=strapi&logoColor=white" alt="Strapi" />
+      <br />
       <img src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
-      <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
     </td>
   </tr>
 </table>
