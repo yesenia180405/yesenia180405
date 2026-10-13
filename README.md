@@ -1,10 +1,6 @@
 <h1 align="center">¡Hola! Soy Yesenia Toro 👋</h1>
 <h3 align="center">Desarrolladora Frontend · Vue & Nuxt · TypeScript</h3>
 
-<p align="center">
-  <img src="https://komarev.com/ghpvc/?username=yesenia180405&color=8b5cf6&style=flat-square&label=Visitas" alt="Visitas al perfil" />
-</p>
-
 ---
 
 ## 💜 Sobre mí
