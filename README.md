@@ -2,7 +2,7 @@
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:6d28d9,100:00dc82&height=180&section=header&text=Yesenia%20Toro&fontSize=48&fontColor=ffffff&fontAlignY=36&desc=Desarrolladora%20Frontend%20%C2%B7%20Vue%20y%20Nuxt%20%C2%B7%20TypeScript&descAlignY=58&descSize=18" alt="Yesenia Toro · Desarrolladora Frontend · Vue y Nuxt · TypeScript" width="100%" />
 </p>
 
-## ✦ Sobre mí
+## ⚜️ Sobre mí
 
 Soy una desarrolladora con formación en **Desarrollo de Aplicaciones Web (DAW)** y actualmente cursando **Desarrollo de Aplicaciones Multiplataforma (DAM)**.
 
