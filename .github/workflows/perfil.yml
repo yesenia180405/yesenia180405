@@ -5,6 +5,10 @@
 #   cambio se vea sin tener que generar nada a mano.
 #
 # Los lenguajes salen solo de los repositorios PÚBLICOS, a propósito.
+#
+# Las contribuciones privadas (repos de la empresa) necesitan el secreto
+# PERFIL_TOKEN: un token personal con permiso "repo". Si no está, se usan los
+# recuentos guardados en datos/privadas.json la última vez.
 name: Perfil
 
 on:
@@ -48,14 +52,17 @@ jobs:
           node scripts/banner.mjs
           node scripts/readme.mjs
 
-      - name: Actividad
+      - name: Actividad y colaboraciones
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/actividad.mjs
+          PERFIL_TOKEN: ${{ secrets.PERFIL_TOKEN }}
+        run: |
+          node scripts/actividad.mjs
+          node scripts/colaboraciones.mjs
 
       - name: Guardar si ha cambiado algo
         run: |
-          git add assets README.md
+          git add assets README.md datos/privadas.json
           if git diff --cached --quiet; then
             echo "Nada que actualizar."
             exit 0

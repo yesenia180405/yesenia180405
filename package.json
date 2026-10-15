@@ -9,7 +9,8 @@
     "banner": "node scripts/banner.mjs",
     "actividad": "node scripts/actividad.mjs",
     "readme": "node scripts/readme.mjs",
-    "todo": "node scripts/fichas.mjs && node scripts/banner.mjs && node scripts/actividad.mjs && node scripts/readme.mjs"
+    "todo": "node scripts/fichas.mjs && node scripts/banner.mjs && node scripts/actividad.mjs && node scripts/colaboraciones.mjs && node scripts/readme.mjs",
+    "colaboraciones": "node scripts/colaboraciones.mjs"
   },
   "dependencies": {
     "fontkit": "^2.0.4",

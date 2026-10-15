@@ -9,7 +9,7 @@
   "banner": [
     [
       "trabajo",
-      "En Alebat desde marzo de 2026"
+      "En Alebat desde septiembre de 2026"
     ],
     [
       "formacion",
@@ -51,7 +51,7 @@
   },
   "sobre_mi": {
     "texto": [
-      "Trabajo como Frontend Developer en Alebat y estudio Desarrollo de Aplicaciones Multiplataforma en el IES Lázaro Cárdenas, después de terminar DAW con un 9,15. Me muevo sobre todo por el frontend: me gusta que una interfaz sea rápida, se vea bien en cualquier pantalla y sea fácil de mantener.",
+      "Trabajo como Frontend Developer en Alebat y estudio Desarrollo de Aplicaciones Multiplataforma en el IES Lázaro Cárdenas, después de terminar DAW. Me muevo sobre todo por el frontend: me gusta que una interfaz sea rápida, se vea bien en cualquier pantalla y sea fácil de mantener.",
       "Disfruto con los retos complicados y con encontrar soluciones creativas a base de código. Mi objetivo es seguir creciendo, aprender cosas nuevas cada semana y sumar en equipos que cuiden lo que construyen."
     ],
     "datos": [
@@ -69,7 +69,7 @@
       ],
       [
         "aptitudes",
-        "Vue.js · Strapi · Sass"
+        "Vue.js · Strapi · Nuxt"
       ]
     ],
     "valores": [

@@ -1,9 +1,14 @@
 // Actividad en GitHub durante el último año: cifras, una barra por semana que
 // crece al cargar y el reparto de lenguajes de los repositorios públicos.
 //
+// Las contribuciones en repos privados de la empresa no salen en el calendario
+// de GitHub; se suman aparte (ver privadas.mjs) y se pintan encima de cada
+// barra en otro tono.
+//
 // Necesita un token: GITHUB_TOKEN en el workflow o, en local, el de `gh`.
 
 import { execSync } from "node:child_process";
+import { contribucionesPrivadas } from "./privadas.mjs";
 import { ANCHO, CABECERA, MARGEN, Lienzo, enAmbosTemas, leerPerfil, medir, r, tarjeta } from "./comun.mjs";
 
 const P = leerPerfil();
@@ -35,12 +40,17 @@ const u = await graphql(`query($u: String!) { user(login: $u) {
   repositories(first: 100, ownerAffiliations: OWNER, isFork: false, privacy: PUBLIC) {
     nodes { name languages(first: 12) { edges { size node { name color } } } } } } }`);
 
+const privadas = await contribucionesPrivadas(P.usuario);
 const semanas = u.contributionsCollection.contributionCalendar.weeks.map((s) =>
-  s.contributionDays.map((d) => ({ fecha: new Date(d.date + "T12:00:00Z"), n: d.contributionCount })),
+  s.contributionDays.map((d) => {
+    const priv = privadas.dias[d.date] ?? 0;
+    return { fecha: new Date(d.date + "T12:00:00Z"), pub: d.contributionCount, priv, n: d.contributionCount + priv };
+  }),
 );
 const dias = semanas.flat();
 
 const total = dias.reduce((a, d) => a + d.n, 0);
+const totalPriv = dias.reduce((a, d) => a + d.priv, 0);
 const activos = dias.filter((d) => d.n).length;
 
 let larga = 0, seguidos = 0;
@@ -88,7 +98,7 @@ async function dibujar(tema) {
   const L = new Lienzo(ANCHO, alto, tema, {
     titulo: "Actividad en GitHub",
     desc:
-      `Actividad en GitHub del ${rango}: ${fmt(total)} contribuciones en ${activos} días, racha más larga de ${larga} días, ` +
+      `Actividad en GitHub del ${rango}: ${fmt(total)} contribuciones (${fmt(totalPriv)} en repositorios privados de empresa) en ${activos} días, racha más larga de ${larga} días, ` +
       `mejor día el ${fechaCorta(mejor.fecha)} con ${mejor.n}, y el ${diaTop} como día más activo. ` +
       `Lenguajes de ${repos.length} repositorios públicos: ${reparto.map(([n, v]) => `${n} ${pct(v)}`).join(", ")}.`,
   });
@@ -97,7 +107,7 @@ async function dibujar(tema) {
 
   // cifras
   const cifras = [
-    [fmt(total), "contribuciones", `mejor día: ${fechaCorta(mejor.fecha)} · ${mejor.n}`],
+    [fmt(total), "contribuciones", totalPriv ? `${fmt(totalPriv)} en repos privados` : `mejor día: ${fechaCorta(mejor.fecha)} · ${mejor.n}`],
     [String(activos), "días con actividad", `de ${dias.length} en el último año`],
     [`${larga}`, "días de racha máxima", actual ? `racha actual: ${actual} ${actual === 1 ? "día" : "días"}` : "racha actual: a por ella"],
     [diaTop, "día más activo", "el que más commits suma"],
@@ -118,6 +128,7 @@ async function dibujar(tema) {
   s += L.t(MARGEN, y0, "CONTRIBUCIONES POR SEMANA", { f: "mono500", s: 11, c: "suave", ls: 1.6 });
   const base = y0 + 168, altoMax = 130;
   const porSemana = semanas.map((sem) => sem.reduce((a, d) => a + d.n, 0));
+  const privSemana = semanas.map((sem) => sem.reduce((a, d) => a + d.priv, 0));
   const maxS = Math.max(1, ...porSemana);
   const n = porSemana.length;
   const paso = (ANCHO - 2 * MARGEN) / n, wb = paso - 4;
@@ -126,8 +137,17 @@ async function dibujar(tema) {
     const yy = base - (altoMax * k) / 3;
     s += `<line x1="${MARGEN}" y1="${r(yy)}" x2="${ANCHO - MARGEN}" y2="${r(yy)}" stroke="${T.rejilla}" stroke-dasharray="2 4"/>`;
   }
+  // leyenda: públicas y privadas
+  if (totalPriv) {
+    const lx = ANCHO - MARGEN - 190;
+    s += `<rect x="${lx}" y="${y0 - 9}" width="10" height="10" rx="3" fill="url(#barra)"/>`;
+    s += L.t(lx + 16, y0, "públicas", { f: "mono400", s: 10.5, c: "suave" });
+    s += `<rect x="${lx + 88}" y="${y0 - 9}" width="10" height="10" rx="3" fill="url(#rayas)" stroke="${T.acento}" stroke-width=".8"/>`;
+    s += L.t(lx + 104, y0, "privadas", { f: "mono400", s: 10.5, c: "suave" });
+  }
   s += L.t(ANCHO - MARGEN, base - altoMax - 8, `máx. ${maxS} / semana`, { f: "mono400", s: 10.5, c: "suave", a: "end" });
-  s += `<defs><linearGradient id="barra" x1="0" y1="${base - altoMax}" x2="0" y2="${base}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${T.acento2}"/><stop offset=".55" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.profundo}"/></linearGradient></defs>`;
+  s += `<defs><linearGradient id="barra" x1="0" y1="${base - altoMax}" x2="0" y2="${base}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${T.acento2}"/><stop offset=".55" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.profundo}"/></linearGradient>`;
+  s += `<pattern id="rayas" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="${T.acento}" opacity=".28"/><rect width="2" height="5" fill="${T.acento}" opacity=".85"/></pattern></defs>`;
   porSemana.forEach((v, i) => {
     const x = MARGEN + i * paso + 2;
     if (!v) {
@@ -135,10 +155,15 @@ async function dibujar(tema) {
       return;
     }
     const h = Math.max(6, (v / maxS) * altoMax);
+    const hp = privSemana[i] ? Math.max(3, (privSemana[i] / maxS) * altoMax) : 0;
     const d = r((i / n) * 0.55);
-    s += `<rect x="${r(x)}" y="${r(base - h)}" width="${r(wb)}" height="${r(h)}" rx="${r(Math.min(4, wb / 2))}" fill="url(#barra)" opacity="${v === maxS ? 1 : 0.88}">`;
-    s += `<animate attributeName="height" values="0;0;${r(h)}" keyTimes="0;${d};1" dur="1.6s" calcMode="spline" keySplines="0 0 1 1;.2 .8 .2 1"/>`;
-    s += `<animate attributeName="y" values="${base};${base};${r(base - h)}" keyTimes="0;${d};1" dur="1.6s" calcMode="spline" keySplines="0 0 1 1;.2 .8 .2 1"/></rect>`;
+    // la barra entera crece desde abajo: se escala un grupo anclado en la base
+    s += `<g transform="translate(${r(x)} ${base})"><g opacity="${v === maxS ? 1 : 0.92}">`;
+    s += `<animateTransform attributeName="transform" type="scale" values="1 0;1 0;1 1" keyTimes="0;${d};1" dur="1.6s" calcMode="spline" keySplines="0 0 1 1;.2 .8 .2 1"/>`;
+    s += `<clipPath id="b${i}"><rect y="${r(-h)}" width="${r(wb)}" height="${r(h)}" rx="${r(Math.min(4, wb / 2))}"/></clipPath><g clip-path="url(#b${i})">`;
+    s += `<rect y="${r(-h)}" width="${r(wb)}" height="${r(h)}" fill="url(#barra)"/>`;
+    if (hp) s += `<rect y="${r(-h)}" width="${r(wb)}" height="${r(hp)}" fill="${T.fondo}"/><rect y="${r(-h)}" width="${r(wb)}" height="${r(hp)}" fill="url(#rayas)"/>`;
+    s += `</g></g></g>`;
   });
   // hoy: un punto que late al final
   const xh = MARGEN + (n - 1) * paso + 2 + wb / 2;
