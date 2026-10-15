@@ -22,8 +22,8 @@ const HREF = { web: (v) => v, linkedin: (v) => v, email: (v) => `mailto:${v}` };
 const lineas = [
   pieza("banner", `${P.nombre}. ${P.titular}: ${P.subtitular}. ${P.banner.map((b) => b[1]).join(". ")}.`),
   contactos.map((k) => enlace(HREF[k](P.contacto[k]), pieza(`contacto-${k}`, `${ETIQUETA[k]}: ${P.contacto[k]}`, anchoC))).join(""),
-  pieza("trayectoria", `Trayectoria. ${P.trayectoria.map((i) => `${i.titulo}, ${i.lugar} (${i.desde} – ${i.hasta})`).join(". ")}.`),
   pieza("que-hago", `Qué hago. ${P.que_hago.map((i) => `${i.titulo}: ${i.texto}`).join(" ")}`),
+  pieza("trayectoria", `Trayectoria. ${P.trayectoria.map((i) => `${i.titulo}, ${i.lugar} (${i.desde} – ${i.hasta})`).join(". ")}.`),
   pieza("stack", `Con qué trabajo: ${P.stack.flatMap((g) => g.items.map((i) => i.nombre)).join(", ")}.`),
   P.proyectos.map((pr) => enlace(pr.web, pieza(`proyecto-${pr.id}`, `${pr.nombre}: ${pr.texto}`, "50%"))).join(""),
   pieza("colaboraciones", "Colaboraciones en repositorios de otros equipos y en repositorios privados."),
