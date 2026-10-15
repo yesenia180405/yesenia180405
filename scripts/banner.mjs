@@ -38,7 +38,7 @@ function escaparate(L, ox, oy) {
   let s = `<g transform="translate(${ox} ${oy})">`;
 
   // sombra suave y ventana
-  s += `<rect x="6" y="14" width="${W - 12}" height="${H - 6}" rx="16" fill="${L.color("profundo")}" opacity="${L.tema === "dark" ? 0.35 : 0.14}" filter="url(#difumina)"/>`;
+  s += `<rect x="6" y="14" width="${W - 12}" height="${H - 6}" rx="16" fill="${L.color("profundo")}" opacity="${L.tema === "dark" ? 0.18 : 0.06}" filter="url(#difumina)"/>`;
   s += `<rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="12" fill="${L.color("panel")}" stroke="${L.color("linea")}"/>`;
   // barra del navegador
   s += `<path d="M.5 34V12.5a12 12 0 0 1 12-12h${W - 25}a12 12 0 0 1 12 12V34z" fill="${L.color("panel2")}"/>`;

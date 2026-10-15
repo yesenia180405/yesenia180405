@@ -143,10 +143,10 @@ async function dibujar(tema) {
     const wt = 30 + 12 + medir(texto, "sans700", 14);
     const x0 = (ANCHO - wt) / 2;
     s += `<g class="entra" style="animation-delay:${(k * 0.08).toFixed(2)}s">`;
-    s += `<defs><linearGradient id="emp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${T.panel}"/><stop offset=".5" stop-color="${T.profundo}" stop-opacity="${tema === "dark" ? 0.35 : 0.12}"/><stop offset="1" stop-color="${T.panel}"/></linearGradient></defs>`;
-    s += `<rect x="${MARGEN}" y="${y}" width="${ANCHO - 2 * MARGEN}" height="${FILA_PRIV}" rx="14" fill="url(#emp)" stroke="${T.acento}" stroke-opacity=".45" stroke-dasharray="4 4"/>`;
-    s += `<rect x="${r(x0)}" y="${y + 16}" width="30" height="30" rx="9" fill="${T.acento}"/>`;
-    s += trazo(GLIFO_CANDADO, x0 + 7, y + 22, 16, "#ffffff");
+    s += `<defs><linearGradient id="emp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${T.profundo}" stop-opacity="0"/><stop offset=".5" stop-color="${T.profundo}" stop-opacity="${tema === "dark" ? 0.16 : 0.05}"/><stop offset="1" stop-color="${T.profundo}" stop-opacity="0"/></linearGradient></defs>`;
+    s += `<rect x="${MARGEN}" y="${y}" width="${ANCHO - 2 * MARGEN}" height="${FILA_PRIV}" rx="14" fill="${T.panel}"/><rect x="${MARGEN}" y="${y}" width="${ANCHO - 2 * MARGEN}" height="${FILA_PRIV}" rx="14" fill="url(#emp)" stroke="${T.tenue}" stroke-opacity=".7" stroke-dasharray="4 4"/>`;
+    s += `<rect x="${r(x0 + 0.5)}" y="${y + 16.5}" width="29" height="29" rx="9" fill="${T.panel2}" stroke="${T.linea}"/>`;
+    s += trazo(GLIFO_CANDADO, x0 + 7, y + 22, 16, T.acento);
     s += L.t(x0 + 42, y + 36, texto, { f: "sans700", s: 14, c: "tinta" });
     const cifras = [[totPriv.commits, "commits"], [totPriv.prs, "PRs"], [totPriv.issues, "issues"]].filter(([n]) => n);
     const anchos = cifras.map(([n, et]) => medir(String(n), "mono500", 11) + medir(` ${et}`, "mono400", 10.5) + 18);

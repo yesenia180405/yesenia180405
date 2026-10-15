@@ -25,24 +25,24 @@
     "marcas": [
       {
         "url": "aurora.shop/es",
-        "color": "#8b5cf6",
-        "claro": "#ede9fe",
+        "color": "#7b6fcf",
+        "claro": "#efedf9",
         "titulo": "Nueva colección",
         "boton": "Comprar ahora",
         "precio": "29,90 €"
       },
       {
         "url": "nebula.store/en",
-        "color": "#3b82f6",
-        "claro": "#dbeafe",
+        "color": "#5279bd",
+        "claro": "#e9eef7",
         "titulo": "New collection",
         "boton": "Shop now",
         "precio": "€29.90"
       },
       {
         "url": "lumen.club/pt",
-        "color": "#6d28d9",
-        "claro": "#ede9fe",
+        "color": "#5e5398",
+        "claro": "#ecebf4",
         "titulo": "Nova coleção",
         "boton": "Assinar já",
         "precio": "R$ 149"
@@ -63,7 +63,8 @@
         "Nuxt",
         "TypeScript",
         "Strapi"
-      ]
+      ],
+      "nota_fecha": "500 horas de prácticas"
     },
     {
       "tipo": "estudios",

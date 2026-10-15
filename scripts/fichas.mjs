@@ -36,7 +36,7 @@ async function contacto(tipo, tema) {
   while (px > 9.5 && medir(valor, "mono400", px) > ancho - 2 * x0 - 4) px -= 0.5;
 
   let s = `<defs>`;
-  s += `<linearGradient id="borde" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}" stop-opacity=".85"/><stop offset=".45" stop-color="${T.linea}"/><stop offset="1" stop-color="${T.linea}"/></linearGradient>`;
+  s += `<linearGradient id="borde" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}" stop-opacity=".3"/><stop offset=".4" stop-color="${T.linea}"/><stop offset="1" stop-color="${T.linea}"/></linearGradient>`;
   s += `<linearGradient id="caja" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.profundo}"/></linearGradient>`;
   s += `<radialGradient id="luz" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(40 30) scale(200 120)"><stop offset="0" stop-color="${T.profundo}" stop-opacity="${T.brillo * 0.55}"/><stop offset="1" stop-color="${T.profundo}" stop-opacity="0"/></radialGradient>`;
   s += `<clipPath id="dentro"><rect x="4" y="2" width="${ancho - 8}" height="${alto - 4}" rx="17"/></clipPath>`;
@@ -45,7 +45,7 @@ async function contacto(tipo, tema) {
   s += `<g clip-path="url(#dentro)">`;
   s += `<rect width="${ancho}" height="${alto}" fill="url(#luz)"/>`;
   // el glifo en grande, de marca de agua
-  s += `<g opacity="${tema === "dark" ? 0.07 : 0.08}" transform="rotate(-12 ${ancho - 50} 70)">${glifo(def.glifo, ancho - 104, 24, 104, T.acento, 1.6)}</g>`;
+  s += `<g opacity="${tema === "dark" ? 0.4 : 0.35}" transform="rotate(-12 ${ancho - 50} 70)">${glifo(def.glifo, ancho - 104, 24, 104, T.tenue, 1.6)}</g>`;
   // un solo brillo que cruza las tarjetas seguidas, como en proyectos: mismas
   // cuentas en coordenadas de la fila entera, desplazadas según la posición
   const dx = orden * ancho;
@@ -54,9 +54,8 @@ async function contacto(tipo, tema) {
   s += `</g>`;
 
   // icono
-  s += `<rect x="${x0}" y="20" width="42" height="42" rx="12" fill="url(#caja)"/>`;
-  s += `<rect x="${x0}" y="20" width="42" height="21" rx="12" fill="#ffffff" opacity=".12"/>`;
-  s += glifo(def.glifo, x0 + 11, 31, 20, "#ffffff", 2);
+  s += `<rect x="${x0 + 0.5}" y="20.5" width="41" height="41" rx="12" fill="${T.panel2}" stroke="${T.linea}"/>`;
+  s += glifo(def.glifo, x0 + 11, 31, 20, T.acento, 2);
   // llamada a la acción
   const wa = medir(def.accion, "mono500", 11) + 40;
   const xa = ancho - x0 - wa;
@@ -103,7 +102,7 @@ async function trayectoria(tema) {
     s += `<rect x="${MARGEN}" y="${yy + 10}" width="${r(we)}" height="18" rx="5" fill="${it.tipo === "trabajo" ? T.panel2 : "none"}" stroke="${T.linea}"/>`;
     s += L.t(MARGEN + we / 2, yy + 22.5, etq, { f: "mono500", s: 9.5, c: "suave", a: "middle", ls: 1.2 });
     // p. ej. las prácticas previas en la misma empresa
-    if (it.nota_fecha) s += L.t(MARGEN, yy + 46, it.nota_fecha, { f: "mono400", s: 10.5, c: "acento" });
+    if (it.nota_fecha) s += L.t(MARGEN, yy + 46, it.nota_fecha, { f: "mono400", s: 10.5, c: "suave" });
     // punto en la línea
     if (it.actual) {
       s += `<circle cx="${xf}" cy="${yy - 5}" r="6" fill="${T.acento}" class="latido"/>`;
@@ -114,7 +113,7 @@ async function trayectoria(tema) {
     // contenido
     let yc = yy;
     titulo.forEach((l) => { s += L.t(xc, yc, l, { f: "sans700", s: 15.5 }); yc += 21; });
-    s += L.t(xc, yc, it.lugar, { f: "sans500", s: 13, c: "acento" });
+    s += L.t(xc, yc, it.lugar, { f: "sans500", s: 13, c: "suave" });
     yc += 22;
     texto.forEach((l) => { s += L.t(xc, yc, l, { f: "sans400", s: 13.5, c: "suave" }); yc += 20; });
     if (it.etiquetas) {
@@ -271,8 +270,8 @@ async function queHago(tema) {
       s += `<g clip-path="url(#qhE${n})"><rect x="${r(ex)}" y="${ey}" width="${r(ew)}" height="${ESC}" fill="url(#puntosQH)"/>${ESCENAS[it.icono]?.(L, ex, ey, ew, ESC) ?? ""}</g>`;
       // título con icono
       const yt = yy + ESC + 24;
-      s += `<rect x="${r(x + 18)}" y="${yt}" width="30" height="30" rx="9" fill="url(#qhIco)"/>`;
-      s += glifo(it.icono, x + 25, yt + 7, 16, "#ffffff", 2.2);
+      s += `<rect x="${r(x + 18.5)}" y="${yt + 0.5}" width="29" height="29" rx="9" fill="${T.panel2}" stroke="${T.linea}"/>`;
+      s += glifo(it.icono, x + 25, yt + 7, 16, T.acento, 2.2);
       s += L.t(x + 60, yt + 20.5, it.titulo, { f: "sans700", s: 15.5 });
       // el número solo si no se pisa con el título
       if (60 + medir(it.titulo, "sans700", 15.5) + 40 < w)
@@ -361,7 +360,7 @@ async function stack(tema) {
   const foto = fs.readFileSync(path.join(ASSETS, "capturas", P.foto)).toString("base64");
   s += `<defs><clipPath id="foto"><circle cx="${cx}" cy="${cy}" r="${rf}"/></clipPath>`;
   s += `<linearGradient id="aro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset=".5" stop-color="${T.profundo}" stop-opacity=".2"/><stop offset="1" stop-color="${T.acento2}"/></linearGradient></defs>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="${rf}" fill="${T.acento}" opacity=".35" class="latido"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${rf}" fill="${T.acento}" opacity=".14" class="latido"/>`;
   s += `<circle cx="${cx}" cy="${cy}" r="${rf + 5}" fill="${T.fondo}"/>`;
   s += `<circle cx="${cx}" cy="${cy}" r="${rf + 4}" fill="none" stroke="url(#aro)" stroke-width="2.5"><animateTransform attributeName="transform" type="rotate" from="0 ${cx} ${cy}" to="360 ${cx} ${cy}" dur="6s" repeatCount="indefinite"/></circle>`;
   s += `<image x="${cx - rf}" y="${cy - rf}" width="${rf * 2}" height="${rf * 2}" clip-path="url(#foto)" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${foto}"/>`;
@@ -439,10 +438,10 @@ async function proyecto(pr, tema) {
     x += w + 6;
   }
   const bw = 92;
-  const tintaBoton = tema === "dark" ? "#0e0a18" : "#ffffff";
-  s += `<rect x="${x1 - bw}" y="${y - 2}" width="${bw}" height="26" rx="13" fill="${T.acento}"/>`;
+  const tintaBoton = T.tinta;
+  s += `<rect x="${x1 - bw + 0.5}" y="${y - 1.5}" width="${bw - 1}" height="25" rx="12.5" fill="${T.panel2}" stroke="${T.linea}"/>`;
   s += L.t(x1 - bw / 2 - 7, y + 15, "ver web", { f: "sans700", s: 12, c: tintaBoton, a: "middle" });
-  s += glifo("flecha", x1 - 26, y + 5, 12, tintaBoton, 2.6);
+  s += glifo("flecha", x1 - 26, y + 5, 12, T.acento, 2.6);
   return L.svg(s);
 }
 
