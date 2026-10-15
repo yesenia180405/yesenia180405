@@ -57,14 +57,13 @@
       "actual": true,
       "titulo": "Frontend Developer",
       "lugar": "Alebat · Collado Villalba",
-      "texto": "Desarrollo frontend en el equipo de Alebat, construyendo interfaces con Vue y Nuxt. Entré en la empresa con 4 meses de prácticas y me quedé.",
+      "texto": "Desarrollo de interfaces con Vue y Nuxt en el equipo de frontend de Alebat, al que me incorporé tras un periodo de prácticas en la empresa.",
       "etiquetas": [
         "Vue",
         "Nuxt",
         "TypeScript",
         "Strapi"
-      ],
-      "nota_fecha": "+ 4 meses de prácticas"
+      ]
     },
     {
       "tipo": "estudios",

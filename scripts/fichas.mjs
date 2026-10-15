@@ -250,11 +250,11 @@ async function queHago(tema) {
   const altos = textos.map((fila) => ESC + 24 + 64 + Math.max(...fila.map((t) => t.length)) * 19);
   const alto = CABECERA + 28 + altos.reduce((a, b) => a + b + gap, -gap) + 28;
   const L = new Lienzo(ANCHO, alto, tema, {
-    titulo: "Qué hago",
-    desc: `Qué hago. ${items.map((i) => `${i.titulo}: ${i.texto}`).join(" ")}`,
+    titulo: "Especialidades",
+    desc: `Especialidades. ${items.map((i) => `${i.titulo}: ${i.texto}`).join(" ")}`,
   });
   const T = L.T;
-  let s = tarjeta(L, "QueHago", `${items.length} cosas que hago a diario`);
+  let s = tarjeta(L, "Especialidades", `${items.length} cosas que hago a diario`);
   s += `<defs><linearGradient id="qhBarra" x1="0" x2="1"><stop offset="0" stop-color="${T.profundo}"/><stop offset="1" stop-color="${T.acento}"/></linearGradient>`;
   s += `<linearGradient id="qhIco" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.profundo}"/></linearGradient></defs>`;
   let yy = CABECERA + 28, n = 0;
