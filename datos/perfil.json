@@ -49,36 +49,6 @@
       }
     ]
   },
-  "sobre_mi": {
-    "texto": [
-      "Trabajo como Frontend Developer en Alebat y estudio Desarrollo de Aplicaciones Multiplataforma en el IES Lázaro Cárdenas, después de terminar DAW. Me muevo sobre todo por el frontend: me gusta que una interfaz sea rápida, se vea bien en cualquier pantalla y sea fácil de mantener.",
-      "Disfruto con los retos complicados y con encontrar soluciones creativas a base de código. Mi objetivo es seguir creciendo, aprender cosas nuevas cada semana y sumar en equipos que cuiden lo que construyen."
-    ],
-    "datos": [
-      [
-        "vivo en",
-        "Collado Villalba, Comunidad de Madrid"
-      ],
-      [
-        "ahora",
-        "Frontend Developer · Alebat"
-      ],
-      [
-        "estudio",
-        "DAM · IES Lázaro Cárdenas"
-      ],
-      [
-        "aptitudes",
-        "Vue.js · Strapi · Nuxt"
-      ]
-    ],
-    "valores": [
-      "colaboración",
-      "innovación",
-      "responsabilidad",
-      "aprendizaje continuo"
-    ]
-  },
   "trayectoria": [
     {
       "tipo": "trabajo",
@@ -92,8 +62,7 @@
         "Vue",
         "Nuxt",
         "TypeScript",
-        "Strapi",
-        "Sass"
+        "Strapi"
       ]
     },
     {

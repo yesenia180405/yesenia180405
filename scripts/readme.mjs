@@ -19,11 +19,9 @@ const anchoC = `${(100 / contactos.length).toFixed(1).replace(/\.0$/, "")}%`;
 const ETIQUETA = { web: "Portfolio", linkedin: "LinkedIn", email: "Correo" };
 const HREF = { web: (v) => v, linkedin: (v) => v, email: (v) => `mailto:${v}` };
 
-const S = P.sobre_mi;
 const lineas = [
   pieza("banner", `${P.nombre}. ${P.titular}: ${P.subtitular}. ${P.banner.map((b) => b[1]).join(". ")}.`),
   contactos.map((k) => enlace(HREF[k](P.contacto[k]), pieza(`contacto-${k}`, `${ETIQUETA[k]}: ${P.contacto[k]}`, anchoC))).join(""),
-  pieza("sobre-mi", `Sobre mí. ${S.texto.join(" ")}`),
   pieza("trayectoria", `Trayectoria. ${P.trayectoria.map((i) => `${i.titulo}, ${i.lugar} (${i.desde} – ${i.hasta})`).join(". ")}.`),
   pieza("que-hago", `Qué hago. ${P.que_hago.map((i) => `${i.titulo}: ${i.texto}`).join(" ")}`),
   pieza("stack", `Con qué trabajo: ${P.stack.flatMap((g) => g.items.map((i) => i.nombre)).join(", ")}.`),

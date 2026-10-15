@@ -67,62 +67,6 @@ async function contacto(tipo, tema) {
   return L.svg(s);
 }
 
-// --- sobre mí ----------------------------------------------------------------------
-
-async function sobreMi(tema) {
-  const S = P.sobre_mi;
-  const colTexto = 470;
-  const px = 15, lh = 25;
-  const parrafos = S.texto.map((t) => partir(t, "sans400", px, colTexto));
-  const altoTexto = parrafos.reduce((a, p) => a + p.length * lh + 14, -14);
-
-  const xd = 548, anchoD = ANCHO - MARGEN - xd;
-  // valores en píldoras, repartidas en filas
-  const pild = [];
-  let px0 = xd, py0 = 0;
-  for (const v of S.valores) {
-    const w = medir(v, "sans500", 12.5) + 24;
-    if (px0 + w > xd + anchoD) { px0 = xd; py0 += 34; }
-    pild.push([px0, py0, w, v]);
-    px0 += w + 8;
-  }
-  const altoDcha = S.datos.length * 44 + 34 + py0 + 18;
-  const alto = CABECERA + 32 + Math.max(altoTexto, altoDcha) + 32;
-
-  const L = new Lienzo(ANCHO, alto, tema, {
-    titulo: "Sobre mí",
-    desc: `Sobre mí. ${S.texto.join(" ")} ${S.datos.map(([k, v]) => `${k}: ${v}`).join(". ")}. Valores: ${S.valores.join(", ")}.`,
-  });
-  const T = L.T;
-  let s = tarjeta(L, "SobreMi", "components/SobreMi.vue");
-
-  let y = CABECERA + 32 + 12;
-  parrafos.forEach((lineas, i) => {
-    for (const l of lineas) {
-      s += L.t(MARGEN, y, l, { f: "sans400", s: px, c: i === 0 ? "tinta" : "suave" });
-      y += lh;
-    }
-    y += 14;
-  });
-
-  // columna derecha: datos rápidos y valores
-  s += `<line x1="${xd - 28}" y1="${CABECERA + 32}" x2="${xd - 28}" y2="${alto - 32}" stroke="${T.linea}"/>`;
-  let yd = CABECERA + 32 + 8;
-  for (const [k, v] of S.datos) {
-    s += L.t(xd, yd, k.toUpperCase(), { f: "mono500", s: 10.5, c: "suave", ls: 1.4 });
-    s += L.t(xd, yd + 19, v, { f: "sans600", s: 13.5, c: "tinta" });
-    yd += 44;
-  }
-  yd += 4;
-  s += L.t(xd, yd, "VALORES", { f: "mono500", s: 10.5, c: "suave", ls: 1.4 });
-  yd += 12;
-  for (const [x, dy, w, v] of pild) {
-    s += `<rect x="${r(x)}" y="${yd + dy}" width="${r(w)}" height="26" rx="13" fill="${T.panel2}" stroke="${T.linea}"/>`;
-    s += L.t(x + w / 2, yd + dy + 17.5, v, { f: "sans500", s: 12.5, c: "tinta", a: "middle" });
-  }
-  return L.svg(s);
-}
-
 // --- trayectoria: trabajo y formación, de lo más reciente a lo más antiguo -----------
 
 async function trayectoria(tema) {
@@ -501,7 +445,6 @@ async function proyecto(pr, tema) {
 // --- salida ----------------------------------------------------------------------------------
 
 for (const tipo of contactosActivos()) await enAmbosTemas(`contacto-${tipo}`, (t) => contacto(tipo, t));
-await enAmbosTemas("sobre-mi", sobreMi);
 await enAmbosTemas("trayectoria", trayectoria);
 await enAmbosTemas("que-hago", queHago);
 await enAmbosTemas("stack", stack);

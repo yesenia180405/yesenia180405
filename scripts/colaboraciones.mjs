@@ -1,7 +1,7 @@
 // Colaboraciones: repositorios de otras personas o equipos en los que he
 // participado, con mis commits, pull requests y revisiones en cada uno.
-// Debajo, una fila que solo indica que también hay trabajo en repositorios
-// privados, sin ningún dato más.
+// Debajo, una fila para el trabajo en repositorios privados: solo lo que
+// aporté (commits, PRs, issues), sin nombres de organización ni de repos.
 
 import { execSync } from "node:child_process";
 import {
@@ -78,13 +78,15 @@ const trazo = (inner, x, y, lado, color) =>
 async function dibujar(tema) {
   const FILA = 78, gap = 10;
   const hayPrivados = (privadas.organizaciones ?? []).length > 0;
-  const FILA_PRIV = 58;
+  const FILA_PRIV = 94;
+  const totPriv = { commits: 0, prs: 0, issues: 0 };
+  for (const o of privadas.organizaciones ?? []) for (const k of Object.keys(totPriv)) totPriv[k] += o[k] ?? 0;
   const alto = CABECERA + 24 + repos.length * (FILA + gap) + (hayPrivados ? FILA_PRIV : -gap) + 28;
   const L = new Lienzo(ANCHO, alto, tema, {
     titulo: "Colaboraciones",
     desc:
       `Colaboraciones en repositorios de otros equipos: ${repos.map((x) => `${x.nameWithOwner} (${x.commits} commits, ${x.prs} pull requests, ${x.revisiones} revisiones)`).join("; ")}. ` +
-      (hayPrivados ? "También trabajo en repositorios privados." : ""),
+      (hayPrivados ? `En repositorios privados: ${totPriv.commits} commits, ${totPriv.prs} pull requests y ${totPriv.issues} issues.` : ""),
   });
   const T = L.T;
   let s = tarjeta(L, "Colaboraciones", `${repos.length} repositorios de otros equipos${hayPrivados ? " + privados" : ""}`);
@@ -135,7 +137,7 @@ async function dibujar(tema) {
     k++;
   }
 
-  // trabajo en repositorios privados: solo el aviso, centrado
+  // trabajo en repositorios privados: el aviso centrado y, debajo, lo que aporté
   if (hayPrivados) {
     const texto = "Repositorios privados";
     const wt = 30 + 12 + medir(texto, "sans700", 14);
@@ -143,9 +145,17 @@ async function dibujar(tema) {
     s += `<g class="entra" style="animation-delay:${(k * 0.08).toFixed(2)}s">`;
     s += `<defs><linearGradient id="emp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${T.panel}"/><stop offset=".5" stop-color="${T.profundo}" stop-opacity="${tema === "dark" ? 0.35 : 0.12}"/><stop offset="1" stop-color="${T.panel}"/></linearGradient></defs>`;
     s += `<rect x="${MARGEN}" y="${y}" width="${ANCHO - 2 * MARGEN}" height="${FILA_PRIV}" rx="14" fill="url(#emp)" stroke="${T.acento}" stroke-opacity=".45" stroke-dasharray="4 4"/>`;
-    s += `<rect x="${r(x0)}" y="${y + (FILA_PRIV - 30) / 2}" width="30" height="30" rx="9" fill="${T.acento}"/>`;
-    s += trazo(GLIFO_CANDADO, x0 + 7, y + (FILA_PRIV - 30) / 2 + 6, 16, "#ffffff");
-    s += L.t(x0 + 42, y + FILA_PRIV / 2 + 5, texto, { f: "sans700", s: 14, c: "tinta" });
+    s += `<rect x="${r(x0)}" y="${y + 16}" width="30" height="30" rx="9" fill="${T.acento}"/>`;
+    s += trazo(GLIFO_CANDADO, x0 + 7, y + 22, 16, "#ffffff");
+    s += L.t(x0 + 42, y + 36, texto, { f: "sans700", s: 14, c: "tinta" });
+    const cifras = [[totPriv.commits, "commits"], [totPriv.prs, "PRs"], [totPriv.issues, "issues"]].filter(([n]) => n);
+    const anchos = cifras.map(([n, et]) => medir(String(n), "mono500", 11) + medir(` ${et}`, "mono400", 10.5) + 18);
+    let x = (ANCHO - (anchos.reduce((p, q) => p + q, 0) + 6 * (cifras.length - 1))) / 2;
+    cifras.forEach(([n, et], i) => {
+      s += `<rect x="${r(x)}" y="${y + 56}" width="${r(anchos[i])}" height="22" rx="7" fill="${T.panel2}" stroke="${T.linea}"/>`;
+      s += L.tramos(x + 9, y + 71, [[String(n), "tinta"], [` ${et}`, "suave"]], { f: "mono400", s: 10.5 });
+      x += anchos[i] + 6;
+    });
     s += `</g>`;
   }
   return L.svg(s);
