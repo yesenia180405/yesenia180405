@@ -102,6 +102,8 @@ async function trayectoria(tema) {
     const we = medir(etq, "mono500", 9.5, 1.2) + 16;
     s += `<rect x="${MARGEN}" y="${yy + 10}" width="${r(we)}" height="18" rx="5" fill="${it.tipo === "trabajo" ? T.panel2 : "none"}" stroke="${T.linea}"/>`;
     s += L.t(MARGEN + we / 2, yy + 22.5, etq, { f: "mono500", s: 9.5, c: "suave", a: "middle", ls: 1.2 });
+    // p. ej. las prácticas previas en la misma empresa
+    if (it.nota_fecha) s += L.t(MARGEN, yy + 46, it.nota_fecha, { f: "mono400", s: 10.5, c: "acento" });
     // punto en la línea
     if (it.actual) {
       s += `<circle cx="${xf}" cy="${yy - 5}" r="6" fill="${T.acento}" class="latido"/>`;
@@ -239,9 +241,9 @@ const ESCENAS = {
 async function queHago(tema) {
   const items = P.que_hago;
   const gap = 14, util = ANCHO - 2 * MARGEN;
-  // primera fila de dos, el resto de tres en tres
-  const filas = [items.slice(0, 2)];
-  for (let i = 2; i < items.length; i += 3) filas.push(items.slice(i, i + 3));
+  // de tres en tres: con tres cosas, todo en una sola fila
+  const filas = [];
+  for (let i = 0; i < items.length; i += 3) filas.push(items.slice(i, i + 3));
   const anchoDe = (fila) => (util - gap * (fila.length - 1)) / fila.length;
   const ESC = 76;
   const textos = filas.map((fila) => fila.map((it) => partir(it.texto, "sans400", 13, anchoDe(fila) - 36)));

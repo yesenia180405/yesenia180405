@@ -57,13 +57,14 @@
       "actual": true,
       "titulo": "Frontend Developer",
       "lugar": "Alebat · Collado Villalba",
-      "texto": "Desarrollo frontend en el equipo de Alebat, construyendo interfaces con Vue y Nuxt.",
+      "texto": "Desarrollo frontend en el equipo de Alebat, construyendo interfaces con Vue y Nuxt. Entré en la empresa con 4 meses de prácticas y me quedé.",
       "etiquetas": [
         "Vue",
         "Nuxt",
         "TypeScript",
         "Strapi"
-      ]
+      ],
+      "nota_fecha": "+ 4 meses de prácticas"
     },
     {
       "tipo": "estudios",
@@ -73,18 +74,6 @@
       "titulo": "Desarrollo de Aplicaciones Multiplataforma",
       "lugar": "IES Lázaro Cárdenas · Grado Superior",
       "texto": "Formación centrada en el diseño, desarrollo e integración de software para móviles (Android/iOS) y otras plataformas."
-    },
-    {
-      "tipo": "trabajo",
-      "desde": "mar 2026",
-      "hasta": "jun 2026",
-      "titulo": "Vue + Nuxt Developer",
-      "lugar": "Alebat · Collado Villalba",
-      "texto": "Mi primera etapa en Alebat: interfaces con Vue y Nuxt en proyectos reales.",
-      "etiquetas": [
-        "Vue",
-        "Nuxt"
-      ]
     },
     {
       "tipo": "estudios",
@@ -117,19 +106,9 @@
       "texto": "Interfaces rápidas, pensadas para buscadores y adaptadas a cualquier pantalla."
     },
     {
-      "icono": "enchufe",
-      "titulo": "APIs e integraciones",
-      "texto": "CMS headless con Strapi, conexión con CRM y autenticación segura."
-    },
-    {
       "icono": "globo",
       "titulo": "Internacionalización",
       "texto": "El mismo producto en español, inglés y portugués, sin duplicar código."
-    },
-    {
-      "icono": "datos",
-      "titulo": "Backend",
-      "texto": "PHP, Laravel y Java, con bases de datos MySQL detrás."
     },
     {
       "icono": "movil",
@@ -286,6 +265,6 @@
   "contacto": {
     "web": "https://prueba-tecnica-1cs4.vercel.app",
     "linkedin": "https://www.linkedin.com/in/yeseniatoro/",
-    "email": "yesealejandra9@gmail.com"
+    "email": "yes.ale1804@gmail.com"
   }
 }
