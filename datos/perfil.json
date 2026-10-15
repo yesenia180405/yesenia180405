@@ -226,12 +226,6 @@
           "orbita": 2
         },
         {
-          "nombre": "Sass",
-          "icono": "sass",
-          "color": "#CC6699",
-          "orbita": 2
-        },
-        {
           "nombre": "Tailwind CSS",
           "icono": "tailwindcss",
           "color": "#06B6D4",

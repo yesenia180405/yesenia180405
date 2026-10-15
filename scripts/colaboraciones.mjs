@@ -1,7 +1,7 @@
 // Colaboraciones: repositorios de otras personas o equipos en los que he
 // participado, con mis commits, pull requests y revisiones en cada uno.
-// Debajo, un resumen del trabajo en repos privados de empresa (solo
-// recuentos, sin nombres de repositorio).
+// Debajo, una fila que solo indica que también hay trabajo en repositorios
+// privados, sin ningún dato más.
 
 import { execSync } from "node:child_process";
 import {
@@ -77,17 +77,18 @@ const trazo = (inner, x, y, lado, color) =>
 
 async function dibujar(tema) {
   const FILA = 78, gap = 10;
-  const orgs = privadas.organizaciones ?? [];
-  const alto = CABECERA + 24 + (repos.length + orgs.length) * (FILA + gap) - gap + 28;
+  const hayPrivados = (privadas.organizaciones ?? []).length > 0;
+  const FILA_PRIV = 58;
+  const alto = CABECERA + 24 + repos.length * (FILA + gap) + (hayPrivados ? FILA_PRIV : -gap) + 28;
   const L = new Lienzo(ANCHO, alto, tema, {
     titulo: "Colaboraciones",
     desc:
       `Colaboraciones en repositorios de otros equipos: ${repos.map((x) => `${x.nameWithOwner} (${x.commits} commits, ${x.prs} pull requests, ${x.revisiones} revisiones)`).join("; ")}. ` +
-      orgs.map((o) => `${o.org}: ${o.repos} repositorios privados, ${o.commits} commits y ${o.prs} pull requests.`).join(" "),
+      (hayPrivados ? "También trabajo en repositorios privados." : ""),
   });
   const T = L.T;
-  let s = tarjeta(L, "Colaboraciones", `${repos.length + orgs.reduce((a, o) => a + o.repos, 0)} repositorios de otros equipos`);
-  const maxC = Math.max(1, ...repos.map((x) => x.commits), ...orgs.map((o) => o.commits));
+  let s = tarjeta(L, "Colaboraciones", `${repos.length} repositorios de otros equipos${hayPrivados ? " + privados" : ""}`);
+  const maxC = Math.max(1, ...repos.map((x) => x.commits));
 
   // chips de cifras alineados a la derecha; devuelve el ancho ocupado
   const chips = (lista, y, destacar) => {
@@ -134,25 +135,18 @@ async function dibujar(tema) {
     k++;
   }
 
-  // trabajo en repos privados de empresa
-  for (const o of orgs) {
+  // trabajo en repositorios privados: solo el aviso, centrado
+  if (hayPrivados) {
+    const texto = "Repositorios privados";
+    const wt = 30 + 12 + medir(texto, "sans700", 14);
+    const x0 = (ANCHO - wt) / 2;
     s += `<g class="entra" style="animation-delay:${(k * 0.08).toFixed(2)}s">`;
-    s += `<defs><linearGradient id="emp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${T.profundo}" stop-opacity="${tema === "dark" ? 0.35 : 0.12}"/><stop offset="1" stop-color="${T.panel}"/></linearGradient></defs>`;
-    s += `<rect x="${MARGEN}" y="${y}" width="${ANCHO - 2 * MARGEN}" height="${FILA}" rx="14" fill="url(#emp)" stroke="${T.acento}" stroke-opacity=".45" stroke-dasharray="4 4"/>`;
-    s += `<rect x="${MARGEN + 16}" y="${y + 16}" width="30" height="30" rx="9" fill="${T.acento}"/>`;
-    s += trazo(GLIFO_CANDADO, MARGEN + 23, y + 22, 16, "#ffffff");
-    const c = chips([[o.commits, "commits"], [o.prs, "PRs"], [o.issues, "issues"]], y + 16, true);
-    s += c.out;
-    const xt = MARGEN + 60;
-    s += L.t(xt, y + 30, o.org, { f: "mono500", s: 12.5, c: "tinta" });
-    s += L.t(xt, y + 50, `${o.repos} repositorios privados · trabajo en empresa`, { f: "sans400", s: 12.5, c: "suave" });
-    const wb = ((ANCHO - 2 * MARGEN - 32) * o.commits) / maxC;
-    s += `<rect x="${MARGEN + 16}" y="${y + FILA - 12}" width="${ANCHO - 2 * MARGEN - 32}" height="3" rx="1.5" fill="${T.linea}"/>`;
-    s += `<rect x="${MARGEN + 16}" y="${y + FILA - 12}" width="${r(wb)}" height="3" rx="1.5" fill="url(#rayasC)"><animate attributeName="width" values="0;0;${r(wb)}" keyTimes="0;${r(0.1 + k * 0.06)};1" dur="1.6s" calcMode="spline" keySplines="0 0 1 1;.2 .8 .2 1"/></rect>`;
-    s += `<defs><pattern id="rayasC" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="${T.acento}" opacity=".35"/><rect width="2.5" height="5" fill="${T.acento}"/></pattern></defs>`;
+    s += `<defs><linearGradient id="emp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${T.panel}"/><stop offset=".5" stop-color="${T.profundo}" stop-opacity="${tema === "dark" ? 0.35 : 0.12}"/><stop offset="1" stop-color="${T.panel}"/></linearGradient></defs>`;
+    s += `<rect x="${MARGEN}" y="${y}" width="${ANCHO - 2 * MARGEN}" height="${FILA_PRIV}" rx="14" fill="url(#emp)" stroke="${T.acento}" stroke-opacity=".45" stroke-dasharray="4 4"/>`;
+    s += `<rect x="${r(x0)}" y="${y + (FILA_PRIV - 30) / 2}" width="30" height="30" rx="9" fill="${T.acento}"/>`;
+    s += trazo(GLIFO_CANDADO, x0 + 7, y + (FILA_PRIV - 30) / 2 + 6, 16, "#ffffff");
+    s += L.t(x0 + 42, y + FILA_PRIV / 2 + 5, texto, { f: "sans700", s: 14, c: "tinta" });
     s += `</g>`;
-    y += FILA + gap;
-    k++;
   }
   return L.svg(s);
 }

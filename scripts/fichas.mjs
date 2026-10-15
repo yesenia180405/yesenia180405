@@ -466,7 +466,11 @@ async function proyecto(pr, tema) {
   s += `<rect x="${x0 + 60}" y="${yv + 8}" width="${wv - 76}" height="18" rx="9" fill="${T.fondo}" stroke="${T.linea}"/>`;
   s += L.t(x0 + 72, yv + 20.5, dominio, { f: "mono400", s: 10, c: "suave" });
   s += `<g clip-path="url(#v${pr.id})"><image x="${x0}" y="${yv + 34}" width="${wv}" height="${Math.round(wv * 0.625)}" preserveAspectRatio="xMidYMin slice" href="data:image/jpeg;base64,${img}"/>`;
-  s += `<rect x="-160" y="${yv}" width="70" height="${hv + 40}" fill="#ffffff" opacity=".10" transform="skewX(-20)"><animate attributeName="x" values="-160;-160;${ancho + 120}" keyTimes="0;.7;1" dur="6s" begin="${lado === "izq" ? 0 : 0.5}s" repeatCount="indefinite"/></rect>`;
+  // un solo brillo que cruza los dos proyectos seguidos: mismas cuentas en
+  // coordenadas de la tarjeta entera, desplazadas en la mitad derecha
+  const dx = lado === "izq" ? 0 : ancho;
+  const g0 = -160 - dx, g1 = ANCHO + 160 - dx;
+  s += `<rect x="${g0}" y="${yv}" width="70" height="${hv + 40}" fill="#ffffff" opacity=".10" transform="skewX(-20)"><animate attributeName="x" values="${g0};${g0};${g1}" keyTimes="0;.6;1" dur="6s" repeatCount="indefinite"/></rect>`;
   s += `<rect x="${x0}" y="${yv + 34}" width="${wv}" height="${hv}" fill="url(#sombra${pr.id})"/></g>`;
   s += `<path d="M${x0 - 0.5} ${yv + 34.5}h${wv + 1}" stroke="${T.linea}"/>`;
 
