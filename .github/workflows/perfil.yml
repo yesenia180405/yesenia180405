@@ -1,0 +1,66 @@
+# Vuelve a dibujar el perfil.
+#
+# - Cada día, para que la actividad y los lenguajes estén al día.
+# - Al cambiar datos/perfil.json, los scripts o los recursos, para que el
+#   cambio se vea sin tener que generar nada a mano.
+#
+# Los lenguajes salen solo de los repositorios PÚBLICOS, a propósito.
+name: Perfil
+
+on:
+  schedule:
+    - cron: "23 4 * * *"
+  push:
+    branches: [main]
+    paths:
+      - "datos/**"
+      - "scripts/**"
+      - "assets/fuentes/**"
+      - "assets/capturas/**"
+      - "package.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: perfil
+  cancel-in-progress: false
+
+jobs:
+  dibujar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Dependencias
+        run: npm ci
+
+      - name: Tarjetas, banner y README
+        run: |
+          node scripts/fichas.mjs
+          node scripts/banner.mjs
+          node scripts/readme.mjs
+
+      - name: Actividad
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/actividad.mjs
+
+      - name: Guardar si ha cambiado algo
+        run: |
+          git add assets README.md
+          if git diff --cached --quiet; then
+            echo "Nada que actualizar."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: perfil actualizado"
+          git push

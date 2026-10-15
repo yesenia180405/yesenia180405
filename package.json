@@ -1,0 +1,18 @@
+{
+  "name": "perfil-yesenia180405",
+  "version": "1.0.0",
+  "description": "Generador de los SVG del perfil de GitHub de Yesenia Toro",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fichas": "node scripts/fichas.mjs",
+    "banner": "node scripts/banner.mjs",
+    "actividad": "node scripts/actividad.mjs",
+    "readme": "node scripts/readme.mjs",
+    "todo": "node scripts/fichas.mjs && node scripts/banner.mjs && node scripts/actividad.mjs && node scripts/readme.mjs"
+  },
+  "dependencies": {
+    "fontkit": "^2.0.4",
+    "subset-font": "^2.4.0"
+  }
+}

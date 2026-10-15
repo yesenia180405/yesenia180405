@@ -1,0 +1,104 @@
+{
+  "_comentario": "Fuente de todo el perfil. Cambia algo aquí y el workflow 'Perfil' vuelve a dibujar los SVG y el README. Para añadir LinkedIn o correo, rellena 'contacto'.",
+  "usuario": "yesenia180405",
+  "nombre": "Yesenia Toro",
+  "saludo": "hola, soy",
+  "titular": "Desarrolladora Frontend",
+  "subtitular": "Vue · Nuxt · TypeScript",
+  "banner": [
+    ["formacion", "Técnica Superior en DAW · cursando DAM"],
+    ["bolsa", "Plataformas e-commerce multimarca"],
+    ["globo", "Interfaces en español, inglés y portugués"]
+  ],
+  "escaparate": {
+    "pie": "una base de código · tres marcas · tres idiomas",
+    "marcas": [
+      { "url": "aurora.shop/es", "color": "#8b5cf6", "claro": "#ede9fe", "titulo": "Nueva colección", "boton": "Comprar ahora", "precio": "29,90 €" },
+      { "url": "nebula.store/en", "color": "#d946ef", "claro": "#fae8ff", "titulo": "New collection", "boton": "Shop now", "precio": "€29.90" },
+      { "url": "lumen.club/pt", "color": "#6366f1", "claro": "#e0e7ff", "titulo": "Nova coleção", "boton": "Assinar já", "precio": "R$ 149" }
+    ]
+  },
+  "sobre_mi": {
+    "texto": [
+      "Terminé el ciclo de Desarrollo de Aplicaciones Web y ahora estoy con Desarrollo de Aplicaciones Multiplataforma. Me muevo sobre todo por el frontend: me gusta que una interfaz sea rápida, se vea bien en cualquier pantalla y sea fácil de mantener.",
+      "Disfruto con los retos complicados y con encontrar soluciones creativas a base de código. Mi objetivo es seguir creciendo, aprender cosas nuevas cada semana y sumar en equipos que cuiden lo que construyen."
+    ],
+    "formacion": [
+      { "titulo": "Desarrollo de Aplicaciones Multiplataforma", "estado": "en curso", "actual": true },
+      { "titulo": "Desarrollo de Aplicaciones Web", "estado": "Técnica Superior · completado", "actual": false }
+    ],
+    "valores": ["colaboración", "innovación", "responsabilidad", "aprendizaje continuo"]
+  },
+  "que_hago": [
+    { "icono": "bolsa", "titulo": "E-commerce multimarca", "texto": "Tiendas y suscripciones con Nuxt 4, Vue 3 y TypeScript: una sola base de código, cada marca con su identidad." },
+    { "icono": "rayo", "titulo": "SEO y rendimiento", "texto": "Interfaces rápidas, pensadas para buscadores y adaptadas a cualquier pantalla." },
+    { "icono": "enchufe", "titulo": "APIs e integraciones", "texto": "CMS headless con Strapi, conexión con CRM y autenticación segura." },
+    { "icono": "globo", "titulo": "Internacionalización", "texto": "El mismo producto en español, inglés y portugués, sin duplicar código." },
+    { "icono": "datos", "titulo": "Backend", "texto": "PHP, Laravel y Java, con bases de datos MySQL detrás." },
+    { "icono": "movil", "titulo": "Multiplataforma", "texto": "Llevando lo aprendido más allá de la web gracias a DAM." }
+  ],
+  "stack": [
+    {
+      "grupo": "frontend",
+      "items": [
+        { "nombre": "Vue", "icono": "vuedotjs", "color": "#4FC08D", "orbita": 1 },
+        { "nombre": "Nuxt", "icono": "nuxtdotjs", "color": "#00DC82", "orbita": 1 },
+        { "nombre": "TypeScript", "icono": "typescript", "color": "#3178C6", "orbita": 1 },
+        { "nombre": "JavaScript", "icono": "javascript", "color": "#F7DF1E", "orbita": 1 },
+        { "nombre": "Pinia", "icono": "pinia", "color": "#FFD859", "orbita": 1 },
+        { "nombre": "Angular", "icono": "angular", "color": "#DD0031", "orbita": 2 }
+      ]
+    },
+    {
+      "grupo": "estilos",
+      "items": [
+        { "nombre": "HTML", "icono": "html5", "color": "#E34F26", "orbita": 2 },
+        { "nombre": "CSS", "icono": "css3", "color": "#1572B6", "orbita": 2 },
+        { "nombre": "Sass", "icono": "sass", "color": "#CC6699", "orbita": 2 },
+        { "nombre": "Tailwind CSS", "icono": "tailwindcss", "color": "#06B6D4", "orbita": 2 }
+      ]
+    },
+    {
+      "grupo": "backend y datos",
+      "items": [
+        { "nombre": "PHP", "icono": "php", "color": "#777BB4", "orbita": 3 },
+        { "nombre": "Laravel", "icono": "laravel", "color": "#FF2D20", "orbita": 3 },
+        { "nombre": "Java", "icono": "openjdk", "color": "#ED8B00", "orbita": 3 },
+        { "nombre": "MySQL", "icono": "mysql", "color": "#4479A1", "orbita": 3 },
+        { "nombre": "Strapi", "icono": "strapi", "color": "#4945FF", "orbita": 2 }
+      ]
+    },
+    {
+      "grupo": "herramientas",
+      "items": [
+        { "nombre": "Git", "icono": "git", "color": "#F05032", "orbita": 3 },
+        { "nombre": "GitHub", "icono": "github", "color": "tinta", "orbita": 3 }
+      ]
+    }
+  ],
+  "proyectos": [
+    {
+      "id": "portfolio",
+      "nombre": "Portfolio",
+      "repo": "prueba-tecnica",
+      "web": "https://prueba-tecnica-1cs4.vercel.app",
+      "captura": "portfolio.jpg",
+      "texto": "Mi portfolio personal: quién soy, qué hago y los proyectos en los que he trabajado.",
+      "etiquetas": ["Nuxt", "Vue", "TypeScript"]
+    },
+    {
+      "id": "midutch",
+      "nombre": "Midutch",
+      "repo": "midutch",
+      "web": "https://midutch-gamma.vercel.app",
+      "captura": "midutch.jpg",
+      "texto": "Clon de la interfaz de Twitch: canales recomendados, directos y categorías.",
+      "etiquetas": ["Nuxt 3", "Vue", "Tailwind CSS"]
+    }
+  ],
+  "contacto": {
+    "web": "https://prueba-tecnica-1cs4.vercel.app",
+    "linkedin": null,
+    "email": null
+  }
+}
