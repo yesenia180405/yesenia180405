@@ -43,7 +43,7 @@ function escaparate(L, ox, oy) {
   // barra del navegador
   s += `<path d="M.5 34V12.5a12 12 0 0 1 12-12h${W - 25}a12 12 0 0 1 12 12V34z" fill="${L.color("panel2")}"/>`;
   s += `<line x1="0" y1="34" x2="${W}" y2="34" stroke="${L.color("linea")}"/>`;
-  ["#ff6b8b", "#fbbf24", "#a78bfa"].forEach((c, i) => (s += `<circle cx="${16 + i * 14}" cy="17" r="4.5" fill="${c}" opacity=".85"/>`));
+  ["#6d28d9", "#8b5cf6", "#c4b5fd"].forEach((c, i) => (s += `<circle cx="${16 + i * 14}" cy="17" r="4.5" fill="${c}" opacity=".85"/>`));
   s += `<rect x="64" y="8" width="${W - 80}" height="18" rx="9" fill="${L.color("fondo")}" stroke="${L.color("linea")}"/>`;
   s += `<path d="M77 15.5v-1.5a2.5 2.5 0 0 1 5 0v1.5" fill="none" stroke="${L.color("suave")}" stroke-width="1.2"/><rect x="75.5" y="15.5" width="8" height="5.5" rx="1.2" fill="${L.color("suave")}"/>`;
   s += turnos(L, 90, 21, M.map((m) => m.url), { f: "mono400", s: 10.5, c: "suave" });

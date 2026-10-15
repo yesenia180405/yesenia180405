@@ -155,8 +155,8 @@ async function dibujar(tema) {
   s += L.t(MARGEN, yl, "LENGUAJES", { f: "mono500", s: 11, c: "suave", ls: 1.6 });
   s += L.t(ANCHO - MARGEN, yl, `${repos.length} repositorios públicos`, { f: "mono400", s: 11, c: "suave", a: "end" });
   const paleta = tema === "dark"
-    ? ["#a78bfa", "#e879f9", "#818cf8", "#c4b5fd", "#f0abfc", "#6d5aa8"]
-    : ["#7c3aed", "#c026d3", "#4f46e5", "#a78bfa", "#e879f9", "#c4b5fd"];
+    ? ["#a78bfa", "#6d28d9", "#ddd6fe", "#8b5cf6", "#4c1d95", "#c4b5fd"]
+    : ["#6d28d9", "#a78bfa", "#3b0764", "#8b5cf6", "#c4b5fd", "#4c1d95"];
   const wTotal = ANCHO - 2 * MARGEN;
   let x = MARGEN;
   s += `<clipPath id="lb"><rect x="${MARGEN}" y="${yl + 14}" width="${wTotal}" height="10" rx="5"/></clipPath><g clip-path="url(#lb)">`;

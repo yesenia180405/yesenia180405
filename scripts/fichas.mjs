@@ -13,37 +13,37 @@ const P = leerPerfil();
 // --- contacto ----------------------------------------------------------------
 
 const CONTACTOS = {
-  web: { glifo: "web", etiqueta: "portfolio", valor: (u) => u.replace(/^https?:\/\//, "").replace(/\/$/, "") },
-  linkedin: { glifo: "linkedin", etiqueta: "linkedin", valor: (u) => u.replace(/^https?:\/\/(www\.)?linkedin\.com\//, "").replace(/\/$/, "") },
-  email: { glifo: "correo", etiqueta: "correo", valor: (u) => u },
+  web: { glifo: "web", titulo: "Portfolio", valor: (u) => u.replace(/^https?:\/\//, "").replace(/\/$/, "") },
+  linkedin: { glifo: "linkedin", titulo: "LinkedIn", valor: (u) => "in/" + u.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, "").replace(/\/$/, "") },
+  email: { glifo: "correo", titulo: "Correo", valor: (u) => u },
 };
 
 export const contactosActivos = () => Object.keys(CONTACTOS).filter((k) => P.contacto[k]);
 
+// Una tarjeta por contacto; el README las pone en fila, cada una con su enlace.
 async function contacto(tipo, tema) {
   const n = contactosActivos().length;
   const ancho = Math.round(ANCHO / n);
   const alto = 96;
   const def = CONTACTOS[tipo];
   const valor = def.valor(P.contacto[tipo]);
-  const L = new Lienzo(ancho, alto, tema, { titulo: def.etiqueta, desc: `${def.etiqueta}: ${valor}` });
+  const L = new Lienzo(ancho, alto, tema, { titulo: def.titulo, desc: `${def.titulo}: ${valor}` });
   const T = L.T;
-  // el texto grande se encoge si no cabe
-  const disponible = ancho - 32 - 64 - 24 - 60;
-  let px = n === 1 ? 26 : 20;
-  while (px > 13 && medir(valor, "sans600", px) > disponible) px -= 1;
+  const caja = n === 1 ? 48 : 44;
+  const xt = 20 + caja + 16;
+  // el dato pequeño se encoge si no cabe
+  let px = 12;
+  while (px > 9.5 && medir(valor, "mono400", px) > ancho - xt - 18) px -= 0.5;
   let s = "";
   s += `<defs><linearGradient id="borde" x1="0" x2="1"><stop offset="0" stop-color="${T.acento}" stop-opacity=".9"/><stop offset=".5" stop-color="${T.acento2}" stop-opacity=".5"/><stop offset="1" stop-color="${T.linea}"/></linearGradient>`;
-  s += `<linearGradient id="caja" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.acento2}"/></linearGradient></defs>`;
-  s += `<rect x="1" y="1" width="${ancho - 2}" height="${alto - 2}" rx="18" fill="${T.panel}" stroke="url(#borde)" stroke-width="1.5"/>`;
-  s += `<rect x="28" y="24" width="48" height="48" rx="14" fill="url(#caja)"/>`;
-  s += glifo(def.glifo, 40, 36, 24, "#ffffff", 2);
-  s += L.t(96, 42, def.etiqueta, { f: "mono400", s: 12, c: "suave", ls: 1.2 });
-  s += L.t(96, 42 + px + 4, valor, { f: "sans600", s: px, c: "tinta" });
+  s += `<linearGradient id="caja" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.profundo}"/></linearGradient></defs>`;
+  s += `<rect x="3" y="1" width="${ancho - 6}" height="${alto - 2}" rx="18" fill="${T.panel}" stroke="url(#borde)" stroke-width="1.5"/>`;
+  s += `<rect x="20" y="${(alto - caja) / 2}" width="${caja}" height="${caja}" rx="13" fill="url(#caja)"/>`;
+  s += glifo(def.glifo, 20 + (caja - 22) / 2, (alto - 22) / 2, 22, "#ffffff", 2);
+  s += L.t(xt, 45, def.titulo, { f: "sans700", s: 18, c: "tinta" });
+  s += L.t(xt, 66, valor, { f: "mono400", s: px, c: "suave" });
   // flecha que "empuja" hacia fuera de vez en cuando
-  const fx = ancho - 56;
-  s += `<circle cx="${fx + 12}" cy="48" r="20" fill="${T.panel2}" stroke="${T.linea}"/>`;
-  s += `<g>${glifo("flecha", fx, 36, 24, T.acento, 2)}<animateTransform attributeName="transform" type="translate" values="0 0;0 0;3 -3;0 0" keyTimes="0;.7;.85;1" dur="3s" repeatCount="indefinite"/></g>`;
+  s += `<g>${glifo("flecha", ancho - 36, 18, 16, T.acento, 2.2)}<animateTransform attributeName="transform" type="translate" values="0 0;0 0;2.5 -2.5;0 0" keyTimes="0;.7;.85;1" dur="3s" repeatCount="indefinite"/></g>`;
   return L.svg(s);
 }
 
@@ -66,12 +66,12 @@ async function sobreMi(tema) {
     pild.push([px0, py0, w, v]);
     px0 += w + 8;
   }
-  const altoDcha = 22 + S.formacion.length * 62 + 34 + py0 + 28;
+  const altoDcha = S.datos.length * 44 + 34 + py0 + 18;
   const alto = CABECERA + 32 + Math.max(altoTexto, altoDcha) + 32;
 
   const L = new Lienzo(ANCHO, alto, tema, {
     titulo: "Sobre mí",
-    desc: `Sobre mí. ${S.texto.join(" ")} Formación: ${S.formacion.map((f) => `${f.titulo} (${f.estado})`).join(", ")}. Valores: ${S.valores.join(", ")}.`,
+    desc: `Sobre mí. ${S.texto.join(" ")} ${S.datos.map(([k, v]) => `${k}: ${v}`).join(". ")}. Valores: ${S.valores.join(", ")}.`,
   });
   const T = L.T;
   let s = tarjeta(L, "SobreMi", "components/SobreMi.vue");
@@ -85,33 +85,83 @@ async function sobreMi(tema) {
     y += 14;
   });
 
-  // columna derecha
+  // columna derecha: datos rápidos y valores
   s += `<line x1="${xd - 28}" y1="${CABECERA + 32}" x2="${xd - 28}" y2="${alto - 32}" stroke="${T.linea}"/>`;
-  let yd = CABECERA + 32 + 10;
-  s += L.t(xd, yd, "FORMACIÓN", { f: "mono500", s: 11, c: "suave", ls: 1.6 });
-  yd += 26;
-  const yIni = yd;
-  S.formacion.forEach((f, i) => {
-    const yy = yd + i * 62;
-    if (f.actual) {
-      s += `<circle cx="${xd + 6}" cy="${yy}" r="6" fill="${T.acento}" class="latido"/>`;
-      s += `<circle cx="${xd + 6}" cy="${yy}" r="6" fill="${T.acento}"/>`;
-    } else {
-      s += `<circle cx="${xd + 6}" cy="${yy}" r="7" fill="${T.panel2}" stroke="${T.acento}" stroke-width="1.5"/>`;
-      s += glifo("check", xd + 1.5, yy - 4.5, 9, T.acento, 3);
-    }
-    const lineas = partir(f.titulo, "sans600", 14, anchoD - 28);
-    lineas.forEach((l, j) => (s += L.t(xd + 24, yy + 5 + j * 19, l, { f: "sans600", s: 14 })));
-    s += L.t(xd + 24, yy + 5 + lineas.length * 19, f.estado, { f: "mono400", s: 11.5, c: f.actual ? "acento" : "suave" });
-  });
-  s += `<line x1="${xd + 6}" y1="${yIni + 8}" x2="${xd + 6}" y2="${yIni + 62 - 9}" stroke="${T.linea}" stroke-dasharray="3 3"/>`;
-  yd += S.formacion.length * 62 + 4;
-  s += L.t(xd, yd, "VALORES", { f: "mono500", s: 11, c: "suave", ls: 1.6 });
-  yd += 14;
+  let yd = CABECERA + 32 + 8;
+  for (const [k, v] of S.datos) {
+    s += L.t(xd, yd, k.toUpperCase(), { f: "mono500", s: 10.5, c: "suave", ls: 1.4 });
+    s += L.t(xd, yd + 19, v, { f: "sans600", s: 13.5, c: "tinta" });
+    yd += 44;
+  }
+  yd += 4;
+  s += L.t(xd, yd, "VALORES", { f: "mono500", s: 10.5, c: "suave", ls: 1.4 });
+  yd += 12;
   for (const [x, dy, w, v] of pild) {
     s += `<rect x="${r(x)}" y="${yd + dy}" width="${r(w)}" height="26" rx="13" fill="${T.panel2}" stroke="${T.linea}"/>`;
     s += L.t(x + w / 2, yd + dy + 17.5, v, { f: "sans500", s: 12.5, c: "tinta", a: "middle" });
   }
+  return L.svg(s);
+}
+
+// --- trayectoria: trabajo y formación, de lo más reciente a lo más antiguo -----------
+
+async function trayectoria(tema) {
+  const items = P.trayectoria;
+  const xf = 196, xc = xf + 28, anchoC = ANCHO - MARGEN - xc;
+  const bloques = items.map((it) => {
+    const titulo = partir(it.titulo, "sans700", 15.5, anchoC);
+    const texto = partir(it.texto, "sans400", 13.5, anchoC);
+    const alto = titulo.length * 21 + 20 + texto.length * 20 + (it.etiquetas ? 34 : 0);
+    return { it, titulo, texto, alto };
+  });
+  const sep = 30;
+  const alto = CABECERA + 34 + bloques.reduce((a, b) => a + b.alto + sep, -sep) + 34;
+  const trabajos = items.filter((i) => i.tipo === "trabajo").length;
+  const L = new Lienzo(ANCHO, alto, tema, {
+    titulo: "Trayectoria",
+    desc: `Trayectoria. ${items.map((i) => `${i.titulo}, ${i.lugar} (${i.desde} – ${i.hasta}). ${i.texto}`).join(" ")}`,
+  });
+  const T = L.T;
+  let s = tarjeta(L, "Trayectoria", `${trabajos} en empresa · ${items.length - trabajos} de formación`);
+
+  let y = CABECERA + 34;
+  const yPrimero = y + 6;
+  let yUltimo = y;
+  bloques.forEach(({ it, titulo, texto, alto: h }, i) => {
+    const yy = y + 12;
+    yUltimo = yy - 6;
+    // fechas y tipo
+    s += L.t(MARGEN, yy, `${it.desde} – ${it.hasta}`, { f: "mono500", s: 12, c: it.actual ? "acento" : "tinta" });
+    const etq = it.tipo === "trabajo" ? "EMPRESA" : "FORMACIÓN";
+    const we = medir(etq, "mono500", 9.5, 1.2) + 16;
+    s += `<rect x="${MARGEN}" y="${yy + 10}" width="${r(we)}" height="18" rx="5" fill="${it.tipo === "trabajo" ? T.panel2 : "none"}" stroke="${T.linea}"/>`;
+    s += L.t(MARGEN + we / 2, yy + 22.5, etq, { f: "mono500", s: 9.5, c: "suave", a: "middle", ls: 1.2 });
+    // punto en la línea
+    if (it.actual) {
+      s += `<circle cx="${xf}" cy="${yy - 5}" r="6" fill="${T.acento}" class="latido"/>`;
+      s += `<circle cx="${xf}" cy="${yy - 5}" r="6" fill="${T.acento}"/>`;
+    } else {
+      s += `<circle cx="${xf}" cy="${yy - 5}" r="5.5" fill="${T.fondo}" stroke="${T.tenue}" stroke-width="2"/>`;
+    }
+    // contenido
+    let yc = yy;
+    titulo.forEach((l) => { s += L.t(xc, yc, l, { f: "sans700", s: 15.5 }); yc += 21; });
+    s += L.t(xc, yc, it.lugar, { f: "sans500", s: 13, c: "acento" });
+    yc += 22;
+    texto.forEach((l) => { s += L.t(xc, yc, l, { f: "sans400", s: 13.5, c: "suave" }); yc += 20; });
+    if (it.etiquetas) {
+      let x = xc;
+      for (const e of it.etiquetas) {
+        const w = medir(e, "mono400", 11) + 18;
+        s += `<rect x="${r(x)}" y="${yc - 4}" width="${r(w)}" height="22" rx="6" fill="${T.panel}" stroke="${T.linea}"/>`;
+        s += L.t(x + w / 2, yc + 11, e, { f: "mono400", s: 11, c: "suave", a: "middle" });
+        x += w + 6;
+      }
+    }
+    y += h + sep;
+  });
+  // la línea de tiempo, debajo de los puntos
+  s = s.replace(`<line x1="${MARGEN}" y1="${CABECERA}"`, `<line x1="${xf}" y1="${yPrimero}" x2="${xf}" y2="${yUltimo}" stroke="${T.linea}" stroke-width="2"/><line x1="${MARGEN}" y1="${CABECERA}"`);
   return L.svg(s);
 }
 
@@ -120,14 +170,13 @@ async function sobreMi(tema) {
 async function queHago(tema) {
   const items = P.que_hago;
   const cols = 3, gap = 14;
-  const w = (ANCHO - 2 * MARGEN - gap * (cols - 1)) / cols;
-  const textos = items.map((it) => partir(it.texto, "sans400", 13, w - 36));
-  const filas = Math.ceil(items.length / cols);
-  const altos = [];
-  for (let f = 0; f < filas; f++) {
-    const fila = textos.slice(f * cols, f * cols + cols);
-    altos.push(84 + Math.max(...fila.map((t) => t.length)) * 19 + 16);
-  }
+  const util = ANCHO - 2 * MARGEN;
+  // la última fila, si va incompleta, reparte el ancho entre las que haya
+  const filas = [];
+  for (let i = 0; i < items.length; i += cols) filas.push(items.slice(i, i + cols));
+  const anchoDe = (fila) => (util - gap * (fila.length - 1)) / fila.length;
+  const textos = filas.map((fila) => fila.map((it) => partir(it.texto, "sans400", 13, anchoDe(fila) - 36)));
+  const altos = textos.map((fila) => 84 + Math.max(...fila.map((t) => t.length)) * 19 + 16);
   const alto = CABECERA + 28 + altos.reduce((a, b) => a + b + gap, -gap) + 28;
   const L = new Lienzo(ANCHO, alto, tema, {
     titulo: "Qué hago",
@@ -136,20 +185,22 @@ async function queHago(tema) {
   const T = L.T;
   let s = tarjeta(L, "QueHago", `${items.length} cosas que hago a diario`);
   s = `<defs><linearGradient id="ico" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.acento2}"/></linearGradient></defs>` + s;
-  let y = CABECERA + 28;
-  items.forEach((it, i) => {
-    const c = i % cols, f = Math.floor(i / cols);
-    const x = MARGEN + c * (w + gap);
-    const yy = y + altos.slice(0, f).reduce((a, b) => a + b + gap, 0);
-    const h = altos[f];
-    s += `<g class="entra" style="animation-delay:${(i * 0.08).toFixed(2)}s">`;
-    s += `<rect x="${r(x)}" y="${yy}" width="${r(w)}" height="${h}" rx="14" fill="${T.panel}" stroke="${T.linea}"/>`;
-    s += `<rect x="${r(x + 18)}" y="${yy + 18}" width="36" height="36" rx="10" fill="url(#ico)" opacity=".14"/>`;
-    s += glifo(it.icono, x + 27, yy + 27, 18, T.acento, 2);
-    s += L.t(x + w - 18, yy + 32, String(i + 1).padStart(2, "0"), { f: "mono400", s: 11, c: "tenue", a: "end" });
-    s += L.t(x + 18, yy + 76, it.titulo, { f: "sans700", s: 15 });
-    textos[i].forEach((l, j) => (s += L.t(x + 18, yy + 100 + j * 19, l, { f: "sans400", s: 13, c: "suave" })));
-    s += `</g>`;
+  let yy = CABECERA + 28, n = 0;
+  filas.forEach((fila, f) => {
+    const w = anchoDe(fila), h = altos[f];
+    fila.forEach((it, c) => {
+      const x = MARGEN + c * (w + gap);
+      s += `<g class="entra" style="animation-delay:${(n * 0.08).toFixed(2)}s">`;
+      s += `<rect x="${r(x)}" y="${yy}" width="${r(w)}" height="${h}" rx="14" fill="${T.panel}" stroke="${T.linea}"/>`;
+      s += `<rect x="${r(x + 18)}" y="${yy + 18}" width="36" height="36" rx="10" fill="url(#ico)" opacity=".14"/>`;
+      s += glifo(it.icono, x + 27, yy + 27, 18, T.acento, 2);
+      s += L.t(x + w - 18, yy + 32, String(n + 1).padStart(2, "0"), { f: "mono400", s: 11, c: "tenue", a: "end" });
+      s += L.t(x + 18, yy + 76, it.titulo, { f: "sans700", s: 15 });
+      textos[f][c].forEach((l, j) => (s += L.t(x + 18, yy + 100 + j * 19, l, { f: "sans400", s: 13, c: "suave" })));
+      s += `</g>`;
+      n++;
+    });
+    yy += h + gap;
   });
   return L.svg(s);
 }
@@ -223,11 +274,15 @@ async function stack(tema) {
     });
     s += `</g>`;
   }
-  // núcleo con mis iniciales
-  s += `<circle cx="${cx}" cy="${cy}" r="30" fill="${T.acento}" opacity=".35" class="latido"/>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="30" fill="url(#nucleo)"/>`;
-  const ini = P.nombre.split(" ").map((p) => p[0]).join("");
-  s += L.t(cx, cy + 7, ini, { f: "sans800", s: 20, c: "#ffffff", a: "middle", ls: -0.5 });
+  // núcleo: mi foto, con un aro degradado que gira
+  const rf = 36;
+  const foto = fs.readFileSync(path.join(ASSETS, "capturas", P.foto)).toString("base64");
+  s += `<defs><clipPath id="foto"><circle cx="${cx}" cy="${cy}" r="${rf}"/></clipPath>`;
+  s += `<linearGradient id="aro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset=".5" stop-color="${T.profundo}" stop-opacity=".2"/><stop offset="1" stop-color="${T.acento2}"/></linearGradient></defs>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${rf}" fill="${T.acento}" opacity=".35" class="latido"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${rf + 5}" fill="${T.fondo}"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${rf + 4}" fill="none" stroke="url(#aro)" stroke-width="2.5"><animateTransform attributeName="transform" type="rotate" from="0 ${cx} ${cy}" to="360 ${cx} ${cy}" dur="6s" repeatCount="indefinite"/></circle>`;
+  s += `<image x="${cx - rf}" y="${cy - rf}" width="${rf * 2}" height="${rf * 2}" clip-path="url(#foto)" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${foto}"/>`;
   s += `</g>`;
   return L.svg(s);
 }
@@ -260,7 +315,7 @@ async function proyecto(pr, tema) {
   s += `<rect x=".5" y=".5" width="${ancho - 1}" height="${alto - 1}" rx="18" fill="${T.fondo}" stroke="${T.linea}"/>`;
   // ventana con la captura
   s += `<rect x="${x0 - 0.5}" y="23.5" width="${wv + 1}" height="${hv + 35}" rx="12" fill="${T.panel2}" stroke="${T.linea}"/>`;
-  ["#ff6b8b", "#fbbf24", "#a78bfa"].forEach((c, i) => (s += `<circle cx="${x0 + 16 + i * 13}" cy="41" r="4" fill="${c}" opacity=".85"/>`));
+  ["#6d28d9", "#8b5cf6", "#c4b5fd"].forEach((c, i) => (s += `<circle cx="${x0 + 16 + i * 13}" cy="41" r="4" fill="${c}" opacity=".85"/>`));
   const dominio = pr.web.replace(/^https?:\/\//, "");
   s += `<rect x="${x0 + 60}" y="32" width="${wv - 76}" height="18" rx="9" fill="${T.fondo}" stroke="${T.linea}"/>`;
   s += L.t(x0 + 72, 44.5, dominio, { f: "mono400", s: 10, c: "suave" });
@@ -297,6 +352,7 @@ async function proyecto(pr, tema) {
 
 for (const tipo of contactosActivos()) await enAmbosTemas(`contacto-${tipo}`, (t) => contacto(tipo, t));
 await enAmbosTemas("sobre-mi", sobreMi);
+await enAmbosTemas("trayectoria", trayectoria);
 await enAmbosTemas("que-hago", queHago);
 await enAmbosTemas("stack", stack);
 await enAmbosTemas("proyectos", cabeceraProyectos);
