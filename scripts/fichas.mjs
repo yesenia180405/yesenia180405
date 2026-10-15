@@ -46,9 +46,11 @@ async function contacto(tipo, tema) {
   s += `<rect width="${ancho}" height="${alto}" fill="url(#luz)"/>`;
   // el glifo en grande, de marca de agua
   s += `<g opacity="${tema === "dark" ? 0.07 : 0.08}" transform="rotate(-12 ${ancho - 50} 70)">${glifo(def.glifo, ancho - 104, 24, 104, T.acento, 1.6)}</g>`;
-  // brillo en ola
-  const ini = r(orden * 0.12 + 0.55), fin = r(orden * 0.12 + 0.85);
-  s += `<rect x="-120" y="-20" width="60" height="${alto + 40}" fill="#ffffff" opacity="${tema === "dark" ? 0.06 : 0.35}" transform="skewX(-22)"><animate attributeName="x" values="-120;-120;${ancho + 80};${ancho + 80}" keyTimes="0;${ini};${fin};1" dur="5s" repeatCount="indefinite"/></rect>`;
+  // un solo brillo que cruza las tarjetas seguidas, como en proyectos: mismas
+  // cuentas en coordenadas de la fila entera, desplazadas según la posición
+  const dx = orden * ancho;
+  const g0 = -120 - dx, g1 = ANCHO + 160 - dx;
+  s += `<rect x="${g0}" y="-20" width="60" height="${alto + 40}" fill="#ffffff" opacity="${tema === "dark" ? 0.07 : 0.35}" transform="skewX(-22)"><animate attributeName="x" values="${g0};${g0};${g1}" keyTimes="0;.55;1" dur="6s" repeatCount="indefinite"/></rect>`;
   s += `</g>`;
 
   // icono
