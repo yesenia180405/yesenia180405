@@ -13,37 +13,57 @@ const P = leerPerfil();
 // --- contacto ----------------------------------------------------------------
 
 const CONTACTOS = {
-  web: { glifo: "web", titulo: "Portfolio", valor: (u) => u.replace(/^https?:\/\//, "").replace(/\/$/, "") },
-  linkedin: { glifo: "linkedin", titulo: "LinkedIn", valor: (u) => "in/" + u.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, "").replace(/\/$/, "") },
-  email: { glifo: "correo", titulo: "Correo", valor: (u) => u },
+  web: { glifo: "web", titulo: "Portfolio", accion: "visitar", valor: (u) => u.replace(/^https?:\/\//, "").replace(/\/$/, "") },
+  linkedin: { glifo: "linkedin", titulo: "LinkedIn", accion: "conectar", valor: (u) => "in/" + u.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, "").replace(/\/$/, "") },
+  email: { glifo: "correo", titulo: "Correo", accion: "escribir", valor: (u) => u },
 };
 
 export const contactosActivos = () => Object.keys(CONTACTOS).filter((k) => P.contacto[k]);
 
 // Una tarjeta por contacto; el README las pone en fila, cada una con su enlace.
+// Un brillo las recorre una detrás de otra, como una ola.
 async function contacto(tipo, tema) {
-  const n = contactosActivos().length;
+  const activos = contactosActivos();
+  const n = activos.length, orden = activos.indexOf(tipo);
   const ancho = Math.round(ANCHO / n);
-  const alto = 96;
+  const alto = 124;
   const def = CONTACTOS[tipo];
   const valor = def.valor(P.contacto[tipo]);
   const L = new Lienzo(ancho, alto, tema, { titulo: def.titulo, desc: `${def.titulo}: ${valor}` });
   const T = L.T;
-  const caja = n === 1 ? 48 : 44;
-  const xt = 20 + caja + 16;
-  // el dato pequeño se encoge si no cabe
+  const x0 = 22;
   let px = 12;
-  while (px > 9.5 && medir(valor, "mono400", px) > ancho - xt - 18) px -= 0.5;
-  let s = "";
-  s += `<defs><linearGradient id="borde" x1="0" x2="1"><stop offset="0" stop-color="${T.acento}" stop-opacity=".9"/><stop offset=".5" stop-color="${T.acento2}" stop-opacity=".5"/><stop offset="1" stop-color="${T.linea}"/></linearGradient>`;
-  s += `<linearGradient id="caja" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.profundo}"/></linearGradient></defs>`;
-  s += `<rect x="3" y="1" width="${ancho - 6}" height="${alto - 2}" rx="18" fill="${T.panel}" stroke="url(#borde)" stroke-width="1.5"/>`;
-  s += `<rect x="20" y="${(alto - caja) / 2}" width="${caja}" height="${caja}" rx="13" fill="url(#caja)"/>`;
-  s += glifo(def.glifo, 20 + (caja - 22) / 2, (alto - 22) / 2, 22, "#ffffff", 2);
-  s += L.t(xt, 45, def.titulo, { f: "sans700", s: 18, c: "tinta" });
-  s += L.t(xt, 66, valor, { f: "mono400", s: px, c: "suave" });
-  // flecha que "empuja" hacia fuera de vez en cuando
-  s += `<g>${glifo("flecha", ancho - 36, 18, 16, T.acento, 2.2)}<animateTransform attributeName="transform" type="translate" values="0 0;0 0;2.5 -2.5;0 0" keyTimes="0;.7;.85;1" dur="3s" repeatCount="indefinite"/></g>`;
+  while (px > 9.5 && medir(valor, "mono400", px) > ancho - 2 * x0 - 4) px -= 0.5;
+
+  let s = `<defs>`;
+  s += `<linearGradient id="borde" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}" stop-opacity=".85"/><stop offset=".45" stop-color="${T.linea}"/><stop offset="1" stop-color="${T.linea}"/></linearGradient>`;
+  s += `<linearGradient id="caja" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.profundo}"/></linearGradient>`;
+  s += `<radialGradient id="luz" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(40 30) scale(200 120)"><stop offset="0" stop-color="${T.profundo}" stop-opacity="${T.brillo * 0.55}"/><stop offset="1" stop-color="${T.profundo}" stop-opacity="0"/></radialGradient>`;
+  s += `<clipPath id="dentro"><rect x="4" y="2" width="${ancho - 8}" height="${alto - 4}" rx="17"/></clipPath>`;
+  s += `</defs>`;
+  s += `<rect x="3.5" y="1.5" width="${ancho - 7}" height="${alto - 3}" rx="18" fill="${T.panel}" stroke="url(#borde)" stroke-width="1.5"/>`;
+  s += `<g clip-path="url(#dentro)">`;
+  s += `<rect width="${ancho}" height="${alto}" fill="url(#luz)"/>`;
+  // el glifo en grande, de marca de agua
+  s += `<g opacity="${tema === "dark" ? 0.07 : 0.08}" transform="rotate(-12 ${ancho - 50} 70)">${glifo(def.glifo, ancho - 104, 24, 104, T.acento, 1.6)}</g>`;
+  // brillo en ola
+  const ini = r(orden * 0.12 + 0.55), fin = r(orden * 0.12 + 0.85);
+  s += `<rect x="-120" y="-20" width="60" height="${alto + 40}" fill="#ffffff" opacity="${tema === "dark" ? 0.06 : 0.35}" transform="skewX(-22)"><animate attributeName="x" values="-120;-120;${ancho + 80};${ancho + 80}" keyTimes="0;${ini};${fin};1" dur="5s" repeatCount="indefinite"/></rect>`;
+  s += `</g>`;
+
+  // icono
+  s += `<rect x="${x0}" y="20" width="42" height="42" rx="12" fill="url(#caja)"/>`;
+  s += `<rect x="${x0}" y="20" width="42" height="21" rx="12" fill="#ffffff" opacity=".12"/>`;
+  s += glifo(def.glifo, x0 + 11, 31, 20, "#ffffff", 2);
+  // llamada a la acción
+  const wa = medir(def.accion, "mono500", 11) + 40;
+  const xa = ancho - x0 - wa;
+  s += `<rect x="${r(xa)}" y="28" width="${r(wa)}" height="26" rx="13" fill="${T.panel2}" stroke="${T.linea}"/>`;
+  s += L.t(xa + 13, 45, def.accion, { f: "mono500", s: 11, c: "acento" });
+  s += `<g>${glifo("flecha", xa + wa - 23, 35, 12, T.acento, 2.6)}<animateTransform attributeName="transform" type="translate" values="0 0;0 0;2 -2;0 0" keyTimes="0;.7;.85;1" dur="2.4s" repeatCount="indefinite"/></g>`;
+  // textos
+  s += L.t(x0, 90, def.titulo, { f: "sans800", s: 18, c: "tinta", ls: -0.2 });
+  s += L.t(x0, 108, valor, { f: "mono400", s: px, c: "suave" });
   return L.svg(s);
 }
 
@@ -166,17 +186,120 @@ async function trayectoria(tema) {
 }
 
 // --- qué hago ------------------------------------------------------------------------
+//
+// Rejilla tipo bento: cada tarjeta lleva arriba una pequeña escena animada que
+// enseña de qué va, en vez de solo un icono.
+
+const ESCENAS = {
+  // tres barras de métricas que se llenan una detrás de otra
+  rayo(L, x, y, w, h) {
+    const T = L.T;
+    let s = "";
+    const filas = [["LCP", 0.9], ["INP", 0.82], ["CLS", 0.95]];
+    const xb = x + 50, wb = w - 50 - 56;
+    filas.forEach(([et, v], i) => {
+      const yy = y + 18 + i * 18;
+      s += L.t(x + 16, yy + 4, et, { f: "mono500", s: 10, c: "suave" });
+      s += `<rect x="${r(xb)}" y="${yy - 3}" width="${r(wb)}" height="6" rx="3" fill="${T.linea}"/>`;
+      const a = r(0.08 + i * 0.1), b = r(0.38 + i * 0.1);
+      s += `<rect x="${r(xb)}" y="${yy - 3}" width="${r(wb * v)}" height="6" rx="3" fill="url(#qhBarra)"><animate attributeName="width" values="0;0;${r(wb * v)};${r(wb * v)};0" keyTimes="0;${a};${b};.92;1" dur="5s" repeatCount="indefinite"/></rect>`;
+      s += `<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;${b};${r(+b + 0.04)};.92;1" dur="5s" repeatCount="indefinite"/>`;
+      s += `<circle cx="${r(xb + wb + 18)}" cy="${yy}" r="6" fill="${T.ok}" opacity=".18"/>${glifo("check", xb + wb + 13.5, yy - 4.5, 9, T.ok, 3)}</g>`;
+    });
+    return s;
+  },
+
+  // el front le pide datos al CMS y vuelve la respuesta
+  enchufe(L, x, y, w, h) {
+    const T = L.T;
+    const cy = y + h / 2 + 4;
+    const caja = (cx, texto) => {
+      const bw = medir(texto, "mono500", 10.5) + 22;
+      return `<rect x="${r(cx - bw / 2)}" y="${cy - 13}" width="${r(bw)}" height="26" rx="8" fill="${T.panel}" stroke="${T.linea}"/>` + L.t(cx, cy + 3.5, texto, { f: "mono500", s: 10.5, c: "tinta", a: "middle" });
+    };
+    const xa = x + 54, xb = x + w - 54;
+    let s = `<path d="M${xa + 30} ${cy}H${xb - 34}" stroke="${T.tenue}" stroke-dasharray="3 4"/>`;
+    s += L.t((xa + xb) / 2, y + 17, "GET /api/contenidos", { f: "mono400", s: 9.5, c: "suave", a: "middle" });
+    s += `<circle r="4" cy="${cy}" fill="${T.acento}"><animate attributeName="cx" values="${xa + 30};${xb - 34};${xb - 34}" keyTimes="0;.45;1" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.45;.46;1" dur="2.6s" repeatCount="indefinite"/></circle>`;
+    s += `<circle r="4" cy="${cy}" fill="${T.ok}" opacity="0"><animate attributeName="cx" values="${xb - 34};${xb - 34};${xa + 30}" keyTimes="0;.5;.95" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.5;.51;.95;1" dur="2.6s" repeatCount="indefinite"/></circle>`;
+    s += caja(xa, "Nuxt") + caja(xb, "Strapi");
+    s += L.t((xa + xb) / 2, y + h - 10, "200 OK · JSON", { f: "mono400", s: 9.5, c: "ok", a: "middle" });
+    return s;
+  },
+
+  // el mismo saludo en los tres idiomas, con el selector moviéndose
+  globo(L, x, y, w, h) {
+    const T = L.T;
+    const textos = ["Hola", "Hello", "Olá"], codigos = ["ES", "EN", "PT"];
+    const fase = ["1;1;0;0;1", "0;0;1;1;0;0", "0;0;1;1;0"];
+    const kt = ["0;.31;.34;.97;1", "0;.31;.34;.64;.67;1", "0;.64;.67;.97;1"];
+    let s = "";
+    textos.forEach((t, i) => {
+      s += `<g opacity="${i ? 0 : 1}"><animate attributeName="opacity" values="${fase[i]}" keyTimes="${kt[i]}" dur="6s" repeatCount="indefinite"/>${L.t(x + 16, y + 44, t, { f: "sans800", s: 24, c: "tinta", ls: -0.4 })}</g>`;
+    });
+    const pw = 30, px0 = x + w - 16 - pw * 3;
+    s += `<rect x="${px0}" y="${y + 26}" width="${pw * 3}" height="24" rx="12" fill="${T.panel}" stroke="${T.linea}"/>`;
+    s += `<rect x="${px0 + 2}" y="${y + 28}" width="${pw - 4}" height="20" rx="10" fill="${T.acento}"><animate attributeName="x" values="${px0 + 2};${px0 + 2};${px0 + pw + 2};${px0 + pw + 2};${px0 + 2 * pw + 2};${px0 + 2 * pw + 2};${px0 + 2}" keyTimes="0;.31;.34;.64;.67;.97;1" dur="6s" repeatCount="indefinite"/></rect>`;
+    codigos.forEach((c, i) => {
+      const cx = px0 + pw * i + pw / 2;
+      s += L.t(cx, y + 41.5, c, { f: "mono500", s: 9.5, c: "suave", a: "middle" });
+      // encima, la versión activa en blanco, a la vez que la píldora
+      s += `<g opacity="${i ? 0 : 1}"><animate attributeName="opacity" values="${fase[i]}" keyTimes="${kt[i]}" dur="6s" repeatCount="indefinite"/>${L.t(cx, y + 41.5, c, { f: "mono500", s: 9.5, c: "#ffffff", a: "middle" })}</g>`;
+    });
+    return s;
+  },
+
+  // una terminal que escribe un comando y responde
+  datos(L, x, y, w, h) {
+    const T = L.T;
+    const cmd = "php artisan migrate";
+    // el recorte crece letra a letra; al acabar, espera y vuelve a empezar
+    let s = `<clipPath id="qhTeclea"><rect x="${x + 28}" y="${y + 10}" width="0" height="20"><animate attributeName="width" values="${Array.from({ length: cmd.length + 1 }, (_, i) => r(medir(cmd.slice(0, i), "mono400", 10.5) + (i ? 1 : 0))).join(";")}" dur="1.8s" begin="0s;qhFin.end" fill="freeze" calcMode="discrete" id="qhEscribe"/></rect></clipPath>`;
+    s += `<rect width="0" height="0"><animate id="qhFin" attributeName="width" values="0;0" dur="3.4s" begin="qhEscribe.end"/></rect>`;
+    s += L.t(x + 16, y + 24, "$", { f: "mono500", s: 10.5, c: "acento" });
+    s += `<g clip-path="url(#qhTeclea)">${L.t(x + 28, y + 24, cmd, { f: "mono400", s: 10.5, c: "tinta" })}</g>`;
+    const salida = [["users", "DONE"], ["orders", "DONE"]];
+    salida.forEach(([tabla, ok], i) => {
+      const yy = y + 44 + i * 16;
+      s += `<g opacity="0"><set attributeName="opacity" to="1" begin="qhEscribe.end+${0.3 + i * 0.35}s" dur="${2.7 - i * 0.35}s"/>`;
+      s += L.t(x + 16, yy, `${tabla} `.padEnd(Math.floor((w - 70) / 6.3), "."), { f: "mono400", s: 10, c: "tenue" });
+      s += L.t(x + w - 16, yy, ok, { f: "mono500", s: 10, c: "ok", a: "end" });
+      s += `</g>`;
+    });
+    return s;
+  },
+
+  // del móvil al escritorio: lo mismo en varias pantallas
+  movil(L, x, y, w, h) {
+    const T = L.T;
+    const cy = y + h / 2;
+    const xm = x + w / 2 - 70, xe = x + w / 2 + 40;
+    let s = "";
+    s += `<rect x="${xm - 11}" y="${cy - 20}" width="22" height="38" rx="5" fill="${T.panel}" stroke="${T.acento}" stroke-width="1.6"/><rect x="${xm - 4}" y="${cy + 12}" width="8" height="2" rx="1" fill="${T.acento}"/>`;
+    s += `<rect x="${xe - 30}" y="${cy - 20}" width="60" height="36" rx="5" fill="${T.panel}" stroke="${T.acento}" stroke-width="1.6"/><path d="M${xe - 10} ${cy + 22}h20M${xe} ${cy + 16}v6" stroke="${T.acento}" stroke-width="1.6" stroke-linecap="round"/>`;
+    // la misma "pantalla" dentro de los dos
+    for (const [cx, ww] of [[xm, 14], [xe, 50]]) {
+      s += `<rect x="${cx - ww / 2}" y="${cy - 14}" width="${ww}" height="6" rx="2" fill="${T.acento}" opacity=".7"><animate attributeName="opacity" values=".7;.25;.7" dur="2.4s" repeatCount="indefinite"/></rect>`;
+      s += `<rect x="${cx - ww / 2}" y="${cy - 5}" width="${ww * 0.7}" height="3" rx="1.5" fill="${T.tenue}"/>`;
+      s += `<rect x="${cx - ww / 2}" y="${cy + 1}" width="${ww * 0.5}" height="3" rx="1.5" fill="${T.tenue}"/>`;
+    }
+    const p = `M${xm + 16} ${cy - 2} C ${xm + 40} ${cy - 26}, ${xe - 54} ${cy - 26}, ${xe - 36} ${cy - 2}`;
+    s += `<path d="${p}" fill="none" stroke="${T.tenue}" stroke-dasharray="3 4"/>`;
+    s += `<circle r="3.5" fill="${T.acento}"><animateMotion path="${p}" dur="2.4s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.7;1" calcMode="linear"/></circle>`;
+    return s;
+  },
+};
 
 async function queHago(tema) {
   const items = P.que_hago;
-  const cols = 3, gap = 14;
-  const util = ANCHO - 2 * MARGEN;
-  // la última fila, si va incompleta, reparte el ancho entre las que haya
-  const filas = [];
-  for (let i = 0; i < items.length; i += cols) filas.push(items.slice(i, i + cols));
+  const gap = 14, util = ANCHO - 2 * MARGEN;
+  // primera fila de dos, el resto de tres en tres
+  const filas = [items.slice(0, 2)];
+  for (let i = 2; i < items.length; i += 3) filas.push(items.slice(i, i + 3));
   const anchoDe = (fila) => (util - gap * (fila.length - 1)) / fila.length;
+  const ESC = 76;
   const textos = filas.map((fila) => fila.map((it) => partir(it.texto, "sans400", 13, anchoDe(fila) - 36)));
-  const altos = textos.map((fila) => 84 + Math.max(...fila.map((t) => t.length)) * 19 + 16);
+  const altos = textos.map((fila) => ESC + 24 + 64 + Math.max(...fila.map((t) => t.length)) * 19);
   const alto = CABECERA + 28 + altos.reduce((a, b) => a + b + gap, -gap) + 28;
   const L = new Lienzo(ANCHO, alto, tema, {
     titulo: "Qué hago",
@@ -184,24 +307,35 @@ async function queHago(tema) {
   });
   const T = L.T;
   let s = tarjeta(L, "QueHago", `${items.length} cosas que hago a diario`);
-  s = `<defs><linearGradient id="ico" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.acento2}"/></linearGradient></defs>` + s;
+  s += `<defs><linearGradient id="qhBarra" x1="0" x2="1"><stop offset="0" stop-color="${T.profundo}"/><stop offset="1" stop-color="${T.acento}"/></linearGradient>`;
+  s += `<linearGradient id="qhIco" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset="1" stop-color="${T.profundo}"/></linearGradient></defs>`;
   let yy = CABECERA + 28, n = 0;
   filas.forEach((fila, f) => {
     const w = anchoDe(fila), h = altos[f];
     fila.forEach((it, c) => {
       const x = MARGEN + c * (w + gap);
       s += `<g class="entra" style="animation-delay:${(n * 0.08).toFixed(2)}s">`;
-      s += `<rect x="${r(x)}" y="${yy}" width="${r(w)}" height="${h}" rx="14" fill="${T.panel}" stroke="${T.linea}"/>`;
-      s += `<rect x="${r(x + 18)}" y="${yy + 18}" width="36" height="36" rx="10" fill="url(#ico)" opacity=".14"/>`;
-      s += glifo(it.icono, x + 27, yy + 27, 18, T.acento, 2);
-      s += L.t(x + w - 18, yy + 32, String(n + 1).padStart(2, "0"), { f: "mono400", s: 11, c: "tenue", a: "end" });
-      s += L.t(x + 18, yy + 76, it.titulo, { f: "sans700", s: 15 });
-      textos[f][c].forEach((l, j) => (s += L.t(x + 18, yy + 100 + j * 19, l, { f: "sans400", s: 13, c: "suave" })));
+      s += `<rect x="${r(x)}" y="${yy}" width="${r(w)}" height="${h}" rx="16" fill="${T.panel}" stroke="${T.linea}"/>`;
+      // escena
+      const ex = x + 10, ey = yy + 10, ew = w - 20;
+      s += `<clipPath id="qhE${n}"><rect x="${r(ex)}" y="${ey}" width="${r(ew)}" height="${ESC}" rx="11"/></clipPath>`;
+      s += `<rect x="${r(ex)}" y="${ey}" width="${r(ew)}" height="${ESC}" rx="11" fill="${T.fondo}" stroke="${T.linea}"/>`;
+      s += `<g clip-path="url(#qhE${n})"><rect x="${r(ex)}" y="${ey}" width="${r(ew)}" height="${ESC}" fill="url(#puntosQH)"/>${ESCENAS[it.icono]?.(L, ex, ey, ew, ESC) ?? ""}</g>`;
+      // título con icono
+      const yt = yy + ESC + 24;
+      s += `<rect x="${r(x + 18)}" y="${yt}" width="30" height="30" rx="9" fill="url(#qhIco)"/>`;
+      s += glifo(it.icono, x + 25, yt + 7, 16, "#ffffff", 2.2);
+      s += L.t(x + 60, yt + 20.5, it.titulo, { f: "sans700", s: 15.5 });
+      // el número solo si no se pisa con el título
+      if (60 + medir(it.titulo, "sans700", 15.5) + 40 < w)
+        s += L.t(x + w - 18, yt + 20, String(n + 1).padStart(2, "0"), { f: "mono400", s: 11, c: "tenue", a: "end" });
+      textos[f][c].forEach((l, j) => (s += L.t(x + 18, yt + 52 + j * 19, l, { f: "sans400", s: 13, c: "suave" })));
       s += `</g>`;
       n++;
     });
     yy += h + gap;
   });
+  s = `<defs><pattern id="puntosQH" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".9" fill="${T.tenue}" opacity=".35"/></pattern></defs>` + s;
   return L.svg(s);
 }
 
@@ -288,52 +422,63 @@ async function stack(tema) {
 }
 
 // --- proyectos ----------------------------------------------------------------------------
-
-async function cabeceraProyectos(tema) {
-  const L = new Lienzo(ANCHO, CABECERA, tema, { titulo: "Proyectos", desc: "Proyectos destacados" });
-  const T = L.T;
-  // una barra de título: las tarjetas de cada proyecto van debajo
-  let s = `<rect x=".5" y=".5" width="${ANCHO - 1}" height="${CABECERA - 1}" rx="18" fill="${T.fondo}" stroke="${T.linea}"/>`;
-  s += `<defs><linearGradient id="gP" x1="0" x2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset=".5" stop-color="${T.acento2}"/><stop offset="1" stop-color="${T.acento}" stop-opacity="0"/></linearGradient></defs>`;
-  s += `<rect x="${MARGEN}" y="0" width="160" height="2" rx="1" fill="url(#gP)"/>`;
-  s += L.tramos(MARGEN, 37, [["<", "tenue"], ["Proyectos", "acento"], [" />", "tenue"]], { f: "mono500", s: 13 });
-  s += L.t(ANCHO - MARGEN, 37, "pulsa una tarjeta para abrir la web", { f: "mono400", s: 12, c: "suave", a: "end" });
-  return L.svg(s);
-}
+//
+// Dos mitades de una misma tarjeta: cada una es una imagen aparte (para que
+// cada proyecto tenga su enlace) pero juntas forman un solo bloque, con la
+// cabecera <Proyectos /> repartida entre las dos.
 
 async function proyecto(pr, tema) {
-  const ancho = 430, alto = 400;
+  const lado = P.proyectos.indexOf(pr) === 0 ? "izq" : "dcha";
+  const ancho = ANCHO / 2, alto = CABECERA + 392;
   const L = new Lienzo(ancho, alto, tema, {
     titulo: pr.nombre,
     desc: `Proyecto ${pr.nombre}: ${pr.texto} Hecho con ${pr.etiquetas.join(", ")}. Web: ${pr.web}`,
   });
   const T = L.T;
   const img = fs.readFileSync(path.join(ASSETS, "capturas", pr.captura)).toString("base64");
-  const x0 = 24, wv = ancho - 48, hv = Math.round(wv * 0.5625 * 0.86);
-  let s = `<defs><clipPath id="v${pr.id}"><rect x="${x0}" y="58" width="${wv}" height="${hv}" rx="0"/></clipPath>`;
-  s += `<linearGradient id="sombra${pr.id}" x1="0" y1="0" x2="0" y2="1"><stop offset=".6" stop-color="${T.panel}" stop-opacity="0"/><stop offset="1" stop-color="${T.panel}" stop-opacity=".9"/></linearGradient></defs>`;
-  s += `<rect x=".5" y=".5" width="${ancho - 1}" height="${alto - 1}" rx="18" fill="${T.fondo}" stroke="${T.linea}"/>`;
-  // ventana con la captura
-  s += `<rect x="${x0 - 0.5}" y="23.5" width="${wv + 1}" height="${hv + 35}" rx="12" fill="${T.panel2}" stroke="${T.linea}"/>`;
-  ["#6d28d9", "#8b5cf6", "#c4b5fd"].forEach((c, i) => (s += `<circle cx="${x0 + 16 + i * 13}" cy="41" r="4" fill="${c}" opacity=".85"/>`));
-  const dominio = pr.web.replace(/^https?:\/\//, "");
-  s += `<rect x="${x0 + 60}" y="32" width="${wv - 76}" height="18" rx="9" fill="${T.fondo}" stroke="${T.linea}"/>`;
-  s += L.t(x0 + 72, 44.5, dominio, { f: "mono400", s: 10, c: "suave" });
-  s += `<g clip-path="url(#v${pr.id})"><image x="${x0}" y="58" width="${wv}" height="${Math.round(wv * 0.625)}" preserveAspectRatio="xMidYMin slice" href="data:image/jpeg;base64,${img}"/>`;
-  // un brillo diagonal que cruza la captura de vez en cuando
-  s += `<rect x="-160" y="40" width="70" height="${hv + 40}" fill="#ffffff" opacity=".10" transform="skewX(-20)"><animate attributeName="x" values="-160;-160;${ancho + 120}" keyTimes="0;.7;1" dur="6s" repeatCount="indefinite"/></rect>`;
-  s += `<rect x="${x0}" y="58" width="${wv}" height="${hv}" fill="url(#sombra${pr.id})"/></g>`;
-  s += `<path d="M${x0 - 0.5} 58.5h${wv + 1}" stroke="${T.linea}"/>`;
+  const rr = 18;
+  // contorno: redondeado solo por fuera
+  const contorno = lado === "izq"
+    ? `M${ancho + 1} .5H${rr + 0.5}A${rr} ${rr} 0 0 0 .5 ${rr + 0.5}V${alto - rr - 0.5}A${rr} ${rr} 0 0 0 ${rr + 0.5} ${alto - 0.5}H${ancho + 1}`
+    : `M-1 .5H${ancho - rr - 0.5}A${rr} ${rr} 0 0 1 ${ancho - 0.5} ${rr + 0.5}V${alto - rr - 0.5}A${rr} ${rr} 0 0 1 ${ancho - rr - 0.5} ${alto - 0.5}H-1`;
+  let s = `<path d="${contorno}" fill="${T.fondo}" stroke="${T.linea}"/>`;
+  // cabecera repartida
+  if (lado === "izq") {
+    s += `<defs><linearGradient id="gP" x1="0" x2="1"><stop offset="0" stop-color="${T.acento}"/><stop offset=".5" stop-color="${T.acento2}"/><stop offset="1" stop-color="${T.acento}" stop-opacity="0"/></linearGradient></defs>`;
+    s += `<rect x="${MARGEN}" y="0" width="160" height="2" rx="1" fill="url(#gP)"/>`;
+    s += L.tramos(MARGEN, 40, [["<", "tenue"], ["Proyectos", "acento"], [" />", "tenue"]], { f: "mono500", s: 13 });
+    s += `<line x1="${MARGEN}" y1="${CABECERA}" x2="${ancho}" y2="${CABECERA}" stroke="${T.linea}"/>`;
+    // separador vertical entre los dos proyectos
+    s += `<line x1="${ancho - 0.5}" y1="${CABECERA + 20}" x2="${ancho - 0.5}" y2="${alto - 20}" stroke="${T.linea}" stroke-dasharray="2 5" stroke-linecap="round"/>`;
+  } else {
+    s += L.t(ancho - MARGEN, 40, "pulsa un proyecto para abrir la web", { f: "mono400", s: 12, c: "suave", a: "end" });
+    s += `<line x1="0" y1="${CABECERA}" x2="${ancho - MARGEN}" y2="${CABECERA}" stroke="${T.linea}"/>`;
+  }
 
-  let y = 58 + hv + 44;
+  const x0 = lado === "izq" ? MARGEN : 22, x1 = lado === "izq" ? ancho - 22 : ancho - MARGEN;
+  const wv = x1 - x0, hv = 178, yv = CABECERA + 24;
+  s += `<defs><clipPath id="v${pr.id}"><rect x="${x0}" y="${yv + 34}" width="${wv}" height="${hv}"/></clipPath>`;
+  s += `<linearGradient id="sombra${pr.id}" x1="0" y1="0" x2="0" y2="1"><stop offset=".55" stop-color="${T.panel}" stop-opacity="0"/><stop offset="1" stop-color="${T.panel}" stop-opacity=".95"/></linearGradient></defs>`;
+  // ventana con la captura
+  s += `<rect x="${x0 - 0.5}" y="${yv - 0.5}" width="${wv + 1}" height="${hv + 35}" rx="12" fill="${T.panel2}" stroke="${T.linea}"/>`;
+  ["#6d28d9", "#8b5cf6", "#c4b5fd"].forEach((c, i) => (s += `<circle cx="${x0 + 16 + i * 13}" cy="${yv + 17}" r="4" fill="${c}" opacity=".85"/>`));
+  const dominio = pr.web.replace(/^https?:\/\//, "");
+  s += `<rect x="${x0 + 60}" y="${yv + 8}" width="${wv - 76}" height="18" rx="9" fill="${T.fondo}" stroke="${T.linea}"/>`;
+  s += L.t(x0 + 72, yv + 20.5, dominio, { f: "mono400", s: 10, c: "suave" });
+  s += `<g clip-path="url(#v${pr.id})"><image x="${x0}" y="${yv + 34}" width="${wv}" height="${Math.round(wv * 0.625)}" preserveAspectRatio="xMidYMin slice" href="data:image/jpeg;base64,${img}"/>`;
+  s += `<rect x="-160" y="${yv}" width="70" height="${hv + 40}" fill="#ffffff" opacity=".10" transform="skewX(-20)"><animate attributeName="x" values="-160;-160;${ancho + 120}" keyTimes="0;.7;1" dur="6s" begin="${lado === "izq" ? 0 : 0.5}s" repeatCount="indefinite"/></rect>`;
+  s += `<rect x="${x0}" y="${yv + 34}" width="${wv}" height="${hv}" fill="url(#sombra${pr.id})"/></g>`;
+  s += `<path d="M${x0 - 0.5} ${yv + 34.5}h${wv + 1}" stroke="${T.linea}"/>`;
+
+  let y = yv + hv + 35 + 36;
   s += L.t(x0, y, pr.nombre, { f: "sans800", s: 20 });
-  s += L.t(ancho - x0, y - 1, `github.com/${P.usuario}/${pr.repo}`.length > 40 ? pr.repo : `/${pr.repo}`, { f: "mono400", s: 11, c: "suave", a: "end" });
+  s += L.t(x1, y - 1, `/${pr.repo}`, { f: "mono400", s: 11, c: "suave", a: "end" });
   y += 24;
-  for (const l of partir(pr.texto, "sans400", 13.5, ancho - 2 * x0)) {
+  for (const l of partir(pr.texto, "sans400", 13.5, wv)) {
     s += L.t(x0, y, l, { f: "sans400", s: 13.5, c: "suave" });
     y += 20;
   }
-  y = alto - 38;
+  y = alto - 46;
   let x = x0;
   for (const e of pr.etiquetas) {
     const w = medir(e, "mono400", 11) + 18;
@@ -342,9 +487,10 @@ async function proyecto(pr, tema) {
     x += w + 6;
   }
   const bw = 92;
-  s += `<rect x="${ancho - x0 - bw}" y="${y - 2}" width="${bw}" height="26" rx="13" fill="${T.acento}"/>`;
-  s += L.t(ancho - x0 - bw / 2 - 7, y + 15, "ver web", { f: "sans700", s: 12, c: tema === "dark" ? "#0e0a18" : "#ffffff", a: "middle" });
-  s += glifo("flecha", ancho - x0 - 26, y + 5, 12, tema === "dark" ? "#0e0a18" : "#ffffff", 2.6);
+  const tintaBoton = tema === "dark" ? "#0e0a18" : "#ffffff";
+  s += `<rect x="${x1 - bw}" y="${y - 2}" width="${bw}" height="26" rx="13" fill="${T.acento}"/>`;
+  s += L.t(x1 - bw / 2 - 7, y + 15, "ver web", { f: "sans700", s: 12, c: tintaBoton, a: "middle" });
+  s += glifo("flecha", x1 - 26, y + 5, 12, tintaBoton, 2.6);
   return L.svg(s);
 }
 
@@ -355,5 +501,4 @@ await enAmbosTemas("sobre-mi", sobreMi);
 await enAmbosTemas("trayectoria", trayectoria);
 await enAmbosTemas("que-hago", queHago);
 await enAmbosTemas("stack", stack);
-await enAmbosTemas("proyectos", cabeceraProyectos);
 for (const pr of P.proyectos) await enAmbosTemas(`proyecto-${pr.id}`, (t) => proyecto(pr, t));

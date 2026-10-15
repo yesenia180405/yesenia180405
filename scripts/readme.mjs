@@ -27,7 +27,6 @@ const lineas = [
   pieza("trayectoria", `Trayectoria. ${P.trayectoria.map((i) => `${i.titulo}, ${i.lugar} (${i.desde} – ${i.hasta})`).join(". ")}.`),
   pieza("que-hago", `Qué hago. ${P.que_hago.map((i) => `${i.titulo}: ${i.texto}`).join(" ")}`),
   pieza("stack", `Con qué trabajo: ${P.stack.flatMap((g) => g.items.map((i) => i.nombre)).join(", ")}.`),
-  pieza("proyectos", "Proyectos destacados"),
   P.proyectos.map((pr) => enlace(pr.web, pieza(`proyecto-${pr.id}`, `${pr.nombre}: ${pr.texto}`, "50%"))).join(""),
   pieza("actividad", "Actividad en GitHub durante el último año y lenguajes de mis repositorios públicos."),
   `<br><sub>Hecho con SVG generados desde <a href="datos/perfil.json"><code>datos/perfil.json</code></a> · la actividad se actualiza sola cada día</sub>`,

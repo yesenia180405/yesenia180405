@@ -33,7 +33,7 @@ async function graphql(query) {
 const u = await graphql(`query($u: String!) { user(login: $u) {
   contributionsCollection { contributionCalendar { weeks { contributionDays { date contributionCount } } } }
   repositories(first: 100, ownerAffiliations: OWNER, isFork: false, privacy: PUBLIC) {
-    nodes { name languages(first: 12) { edges { size node { name } } } } } } }`);
+    nodes { name languages(first: 12) { edges { size node { name color } } } } } } }`);
 
 const semanas = u.contributionsCollection.contributionCalendar.weeks.map((s) =>
   s.contributionDays.map((d) => ({ fecha: new Date(d.date + "T12:00:00Z"), n: d.contributionCount })),
@@ -65,8 +65,12 @@ const rango = `${fechaCorta(dias[0].fecha)} ${dias[0].fecha.getUTCFullYear()} â€
 
 const repos = u.repositories.nodes.filter((x) => x.name.toLowerCase() !== P.usuario.toLowerCase());
 const lenguajes = new Map();
+const coloresL = new Map();
 for (const repo of repos)
-  for (const e of repo.languages.edges) lenguajes.set(e.node.name, (lenguajes.get(e.node.name) ?? 0) + e.size);
+  for (const e of repo.languages.edges) {
+    lenguajes.set(e.node.name, (lenguajes.get(e.node.name) ?? 0) + e.size);
+    coloresL.set(e.node.name, e.node.color);
+  }
 const sumaL = [...lenguajes.values()].reduce((a, b) => a + b, 0) || 1;
 let reparto = [...lenguajes.entries()].sort((a, b) => b[1] - a[1]).map(([n, v]) => [n, v / sumaL]);
 if (reparto.length > 6) {
@@ -154,9 +158,8 @@ async function dibujar(tema) {
   const yl = base + 62;
   s += L.t(MARGEN, yl, "LENGUAJES", { f: "mono500", s: 11, c: "suave", ls: 1.6 });
   s += L.t(ANCHO - MARGEN, yl, `${repos.length} repositorios pÃºblicos`, { f: "mono400", s: 11, c: "suave", a: "end" });
-  const paleta = tema === "dark"
-    ? ["#a78bfa", "#6d28d9", "#ddd6fe", "#8b5cf6", "#4c1d95", "#c4b5fd"]
-    : ["#6d28d9", "#a78bfa", "#3b0764", "#8b5cf6", "#c4b5fd", "#4c1d95"];
+  // cada lenguaje con su color de GitHub; "Otros" en un gris neutro
+  const paleta = reparto.map(([nombre]) => coloresL.get(nombre) ?? T.tenue);
   const wTotal = ANCHO - 2 * MARGEN;
   let x = MARGEN;
   s += `<clipPath id="lb"><rect x="${MARGEN}" y="${yl + 14}" width="${wTotal}" height="10" rx="5"/></clipPath><g clip-path="url(#lb)">`;
